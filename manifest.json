@@ -1,0 +1,15 @@
+{
+  "short_name": "QuickTap",
+  "name": "QuickTap Admin Portal",
+  "icons": [
+    {
+      "src": "https://quicktapsolutions.com/favicon.ico",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    }
+  ],
+  "start_url": "/admin.html",
+  "background_color": "#0b132b",
+  "theme_color": "#0b132b",
+  "display": "standalone"
+}

@@ -1,0 +1,10 @@
+BEGIN:VCARD
+VERSION:3.0
+N:Jones;Julius;Lamar;;
+FN:Julius Lamar Jones
+ORG:QuickTap Solutions
+TITLE:Technology Architect
+TEL;TYPE=CELL,VOICE:8329025417
+EMAIL;TYPE=PREF,INTERNET:architect@quicktapsolutions.com
+URL:https://quicktap-7q3o.vercel.app
+END:VCARD

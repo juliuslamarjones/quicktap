@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Julius Jones | QuickTap Solutions</title>
+
+  <!-- Facebook / Open Graph Social Preview Tags -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://seemydriver.com/" />
+  <meta property="og:title" content="Julius Jones | QuickTap Solutions" />
+  <meta property="og:description" content="Tap to connect! View my digital business card, watch my quick intro video, and save my contact info directly to your phone." />
+  <meta property="og:image" content="https://seemydriver.com/logo_qt.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+
+  <!-- Twitter / X Card Meta Tags -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Julius Jones | QuickTap Solutions" />
+  <meta name="twitter:description" content="Tap to connect! View my digital business card and save my contact info." />
+  <meta name="twitter:image" content="https://seemydriver.com/logo_qt.png" />
+
+  <link rel="manifest" href="manifest.json" />
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- OneSignal Push Notifications SDK -->
+  <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+  <script>
+    window.OneSignalDeferred = window.OneSignalDeferred || [];
+    OneSignalDeferred.push(async function(OneSignal) {
+      await OneSignal.init({
+        appId: "YOUR_ONESIGNAL_APP_ID", // Replace with your actual OneSignal App ID
+      });
+    });
+  </script>
+</head>
+<body class="bg-slate-950 text-white min-h-screen flex items-center justify-center p-4 antialiased">
+
+  <!-- Main Card Container -->
+  <main class="w-full max-w-md bg-white/10 backdrop-blur-lg border border-white/20 rounded-3xl p-6 shadow-2xl text-center space-y-5 relative overflow-hidden">
+    
+    <!-- Header / Logo -->
+    <div class="flex justify-center items-center pt-2">
+      <img id="company-logo" src="logo_qt.png" alt="QuickTap Logo" class="h-12 w-auto object-contain" />
+    </div>
+
+    <!-- Video Showcase -->
+    <div class="relative rounded-2xl overflow-hidden border border-white/10 shadow-lg bg-black/40">
+      <video 
+        id="intro-video" 
+        src="intro.mp4" 
+        controls 
+        playsinline
+        class="w-full h-48 object-cover"
+      ></video>
+    </div>
+
+    <!-- Profile Text -->
+    <div class="space-y-1">
+      <h1 id="user-name" class="text-2xl font-bold tracking-tight text-white">Julius Jones</h1>
+      <p id="user-title" class="text-emerald-400 text-sm font-semibold">Founder & Software Developer • QuickTap Solutions</p>
+      <p id="user-bio" class="text-slate-300 text-xs px-2 pt-2 leading-relaxed">
+        Building high-speed dynamic digital cards, PWAs, and custom business automation tools.
+      </p>
+    </div>
+
+    <!-- Contact Action Buttons -->
+    <div class="grid grid-cols-2 gap-3 pt-2">
+      <a 
+        id="call-btn" 
+        href="tel:5550192831" 
+        class="flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-500 text-white py-3 px-4 rounded-xl text-sm font-bold transition-all shadow-md active:scale-95"
+      >
+        📞 Call
+      </a>
+      <a 
+        id="email-btn" 
+        href="mailto:julius@quicktapsolutions.com" 
+        class="flex items-center justify-center gap-2 bg-sky-600 hover:bg-sky-500 text-white py-3 px-4 rounded-xl text-sm font-bold transition-all shadow-md active:scale-95"
+      >
+        ✉️ Email
+      </a>
+    </div>
+
+    <!-- Save Contact Button (Downloads contact.vcf) -->
+    <a 
+      id="vcard-btn" 
+      href="contact.vcf" 
+      download
+      class="block w-full bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-400 hover:to-amber-400 text-white font-bold py-3.5 px-4 rounded-xl shadow-xl transition-all text-center transform active:scale-95"
+    >
+      📱 Save Contact to Phone
+    </a>
+
+    <!-- Footer Tag -->
+    <p class="text-[10px] text-slate-400 pt-2 tracking-wider uppercase">Powered by QuickTap Solutions</p>
+  </main>
+
+  <!-- Dynamic JSON Fetch Script -->
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      try {
+        // Fetch dynamic json with cache-busting so changes update instantly
+        const response = await fetch('card-data.json?cb=' + Date.now());
+        if (!response.ok) return;
+        
+        const data = await response.json();
+
+        // Update Text Elements
+        if (data.name && document.getElementById('user-name')) {
+          document.getElementById('user-name').innerText = data.name;
+        }
+        if (data.title && document.getElementById('user-title')) {
+          const companyStr = data.company ? ` • ${data.company}` : '';
+          document.getElementById('user-title').innerText = `${data.title}${companyStr}`;
+        }
+        if (data.bio && document.getElementById('user-bio')) {
+          document.getElementById('user-bio').innerText = data.bio;
+        }
+
+        // Update Action Links
+        if (data.phone && document.getElementById('call-btn')) {
+          document.getElementById('call-btn').href = `tel:${data.phone}`;
+        }
+        if (data.email && document.getElementById('email-btn')) {
+          document.getElementById('email-btn').href = `mailto:${data.email}`;
+        }
+        if (data.vcardUrl && document.getElementById('vcard-btn')) {
+          document.getElementById('vcard-btn').href = data.vcardUrl;
+        }
+
+        // Update Media Sources
+        if (data.videoUrl && document.getElementById('intro-video')) {
+          document.getElementById('intro-video').src = data.videoUrl;
+        }
+        if (data.logoUrl && document.getElementById('company-logo')) {
+          document.getElementById('company-logo').src = data.logoUrl;
+        }
+      } catch (err) {
+        console.log('Using default inline card values:', err);
+      }
+    });
+  </script>
+
+</body>
+</html>
