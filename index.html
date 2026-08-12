@@ -124,12 +124,23 @@
 
   <!-- Interactive Scripts -->
   <script>
-    // OneSignal Native Permission Trigger (v16 Compatible)
+    // OneSignal Native Permission Trigger (With In-App Browser Handling)
     async function subscribeToNotifications() {
+      // Detect Facebook / Instagram / LinkedIn in-app browsers
+      const isInAppBrowser = /FBAN|FBAV|Instagram|LinkedInApp/i.test(navigator.userAgent);
+
+      if (isInAppBrowser) {
+        alert("To activate Revenue Broadcasts, please open this card in your main browser (tap the 3 dots '⋮' at the top right and select 'Open in Chrome' or 'Open in Safari').");
+        return;
+      }
+
       if (window.OneSignal) {
         try {
           const permission = await window.OneSignal.Notifications.requestPermission();
           console.log("Push permission status:", permission);
+          if (permission) {
+            alert("You are subscribed to Revenue Broadcasts!");
+          }
         } catch (err) {
           console.log("OneSignal push error:", err);
         }
@@ -157,7 +168,7 @@
           } else {
             video.muted = true;
             audioText.innerText = 'TAP FOR AUDIO';
-            audioIcon.innerText = '🔈';
+            audioIcon.innerText = '0';
             audioBtn.classList.remove('border-emerald-500', 'text-emerald-400');
           }
         });
