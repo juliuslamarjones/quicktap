@@ -124,18 +124,16 @@
 
   <!-- Interactive Scripts -->
   <script>
-    // OneSignal Push Trigger Handler
-    function subscribeToNotifications() {
-      if (window.OneSignalDeferred) {
-        OneSignalDeferred.push(async function(OneSignal) {
-          try {
-            await OneSignal.Notifications.requestPermission();
-          } catch (err) {
-            console.log("OneSignal push error:", err);
-          }
-        });
+    // OneSignal Push Trigger Handler (Using Slidedown UI)
+    async function subscribeToNotifications() {
+      if (window.OneSignal) {
+        try {
+          await window.OneSignal.Slidedown.promptPush();
+        } catch (err) {
+          console.log("OneSignal push error:", err);
+        }
       } else {
-        alert("Push notification SDK loading... Please try again in a second.");
+        alert("Push notification system is still loading. Please try again in a second.");
       }
     }
 
