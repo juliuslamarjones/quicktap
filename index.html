@@ -124,11 +124,12 @@
 
   <!-- Interactive Scripts -->
   <script>
-    // OneSignal Push Trigger Handler (Using Slidedown UI)
+    // OneSignal Native Permission Trigger (v16 Compatible)
     async function subscribeToNotifications() {
       if (window.OneSignal) {
         try {
-          await window.OneSignal.Slidedown.promptPush();
+          const permission = await window.OneSignal.Notifications.requestPermission();
+          console.log("Push permission status:", permission);
         } catch (err) {
           console.log("OneSignal push error:", err);
         }
