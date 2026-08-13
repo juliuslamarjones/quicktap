@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Angalene Laman | Élevé Relocation Group</title>
+  <title>Angie | Élevé Relocation Group</title>
 
   <!-- Open Graph / Facebook Preview Tags -->
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://quicktapsolutions.com/angie" />
-  <meta property="og:title" content="Angalene Laman | Realtor® & Relocation Specialist" />
+  <meta property="og:title" content="Angie | Realtor® & Relocation Specialist" />
   <meta property="og:description" content="From Chicago to Houston, I help you move with confidence. Tap to view my luxury profile and active open houses." />
   <meta property="og:image" content="https://quicktapsolutions.com/logo_qt.png" />
 
@@ -64,7 +64,7 @@
 
     <!-- Header Profile -->
     <div class="text-center space-y-1.5">
-      <h1 id="user-name" class="text-3xl font-extrabold tracking-tight text-white font-serif">Angalene Laman</h1>
+      <h1 id="user-name" class="text-3xl font-extrabold tracking-tight text-white font-serif">Angie</h1>
       <p id="user-title" class="text-[#D4AF37] text-xs font-bold tracking-widest uppercase">REALTOR® | RELOCATION SPECIALIST</p>
       <p class="text-slate-400 text-xs italic">"From Chicago to Houston, I help you move with confidence."</p>
     </div>
@@ -79,16 +79,23 @@
       </a>
     </div>
 
-    <!-- Feature Media Showcase -->
-    <div class="relative rounded-2xl overflow-hidden border border-[#D4AF37]/40 shadow-2xl bg-black group">
-      <video id="intro-video" src="intro.mp4" autoplay loop muted playsinline class="w-full h-56 object-cover"></video>
-      <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none"></div>
-      <div class="absolute bottom-3 left-3 text-[10px] text-[#D4AF37] font-semibold uppercase tracking-wider">
-        📍 Houston, Texas
+    <!-- Feature Media Showcase (Luxury Property Image Carousel) -->
+    <div class="relative rounded-2xl overflow-hidden border border-[#D4AF37]/40 shadow-2xl bg-black cursor-pointer group">
+      <img id="property-slide" 
+           src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=800&q=80" 
+           alt="Houston Luxury Property" 
+           class="w-full h-60 object-cover transition-all duration-700 ease-in-out" />
+      
+      <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent pointer-events-none"></div>
+      
+      <!-- Property Badge Label -->
+      <div class="absolute bottom-3 left-3 right-3 flex justify-between items-end">
+        <div>
+          <p id="property-location" class="text-[10px] text-[#D4AF37] font-bold uppercase tracking-widest">📍 River Oaks Estate • Houston</p>
+          <p id="property-price" class="text-xs text-white font-extrabold tracking-tight">$4,250,000 | Luxury Relocation Featured</p>
+        </div>
+        <span class="text-[9px] bg-black/60 text-slate-300 px-2 py-0.5 rounded-full border border-[#D4AF37]/30">TAP TO SWAP</span>
       </div>
-      <button id="audio-toggle-btn" class="absolute bottom-3 right-3 bg-black/80 backdrop-blur-md border border-[#D4AF37]/50 text-[#D4AF37] text-[10px] font-bold px-3 py-1.5 rounded-full flex items-center gap-1.5 shadow-lg transition-all active:scale-95 cursor-pointer z-10">
-        <span id="audio-icon">🔈</span> <span id="audio-text">TAP FOR AUDIO</span>
-      </button>
     </div>
 
     <!-- Main Action Buttons -->
@@ -117,7 +124,7 @@
           <img id="qr-code" src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=https://quicktapsolutions.com/angie" alt="QR Code" class="w-36 h-36 object-contain" />
         </div>
       </div>
-      <p class="text-[11px] text-slate-400 font-medium">Point camera here to open Angalene's profile directly on any phone.</p>
+      <p class="text-[11px] text-slate-400 font-medium">Point camera here to open Angie's profile directly on any phone.</p>
     </div>
 
     <!-- How To Connect Section Box -->
@@ -170,7 +177,45 @@
       });
     }
 
-    document.addEventListener('DOMContentLoaded', async () => {
+    // Property Carousel
+    const properties = [
+      {
+        img: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=800&q=80",
+        location: "📍 River Oaks Estate • Houston",
+        price: "$4,250,000 | Luxury Relocation Featured"
+      },
+      {
+        img: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=800&q=80",
+        location: "📍 Memorial Modern Construction • Houston",
+        price: "$1,850,000 | Custom Steel Framing"
+      },
+      {
+        img: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=800&q=80",
+        location: "📍 The Woodlands Waterfront • Texas",
+        price: "$2,975,000 | Executive Suite"
+      }
+    ];
+
+    let currentPropIndex = 0;
+
+    function nextProperty() {
+      const propImg = document.getElementById('property-slide');
+      const propLoc = document.getElementById('property-location');
+      const propPrice = document.getElementById('property-price');
+
+      if (propImg) {
+        currentPropIndex = (currentPropIndex + 1) % properties.length;
+        propImg.style.opacity = '0.3';
+        setTimeout(() => {
+          propImg.src = properties[currentPropIndex].img;
+          propLoc.innerText = properties[currentPropIndex].location;
+          propPrice.innerText = properties[currentPropIndex].price;
+          propImg.style.opacity = '1';
+        }, 200);
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
       // Show In-App Browser Warning if opened inside FB/Instagram
       const isInAppBrowser = /FBAN|FBAV|Instagram|LinkedInApp/i.test(navigator.userAgent);
       if (isInAppBrowser) {
@@ -178,28 +223,11 @@
         if (fbNotice) fbNotice.classList.remove('hidden');
       }
 
-      // Audio Unmute Handler
-      const video = document.getElementById('intro-video');
-      const audioBtn = document.getElementById('audio-toggle-btn');
-      const audioText = document.getElementById('audio-text');
-      const audioIcon = document.getElementById('audio-icon');
-
-      if (video && audioBtn) {
-        audioBtn.addEventListener('click', (e) => {
-          e.preventDefault();
-          if (video.muted) {
-            video.muted = false;
-            video.play();
-            audioText.innerText = 'MUTE AUDIO';
-            audioIcon.innerText = '🔊';
-            audioBtn.classList.add('border-[#D4AF37]', 'text-[#D4AF37]');
-          } else {
-            video.muted = true;
-            audioText.innerText = 'TAP FOR AUDIO';
-            audioIcon.innerText = '🔈';
-            audioBtn.classList.remove('border-[#D4AF37]', 'text-[#D4AF37]');
-          }
-        });
+      // Initialize Photo Carousel Auto-rotate & click handler
+      const propImg = document.getElementById('property-slide');
+      if (propImg) {
+        setInterval(nextProperty, 4000);
+        propImg.parentElement.addEventListener('click', nextProperty);
       }
     });
   </script>
