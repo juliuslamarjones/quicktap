@@ -3,11 +3,7 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const { title, message, url, adminPin } = req.body;
-
-  if (adminPin !== '1234') { 
-    return res.status(401).json({ error: 'Invalid Passcode' });
-  }
+  const { title, message, url, subscriptionId } = req.body;
 
   if (!title || !message) {
     return res.status(400).json({ error: 'Title and message are required.' });
@@ -29,12 +25,18 @@ export default async function handler(req, res) {
   try {
     const payload = {
       app_id: ONESIGNAL_APP_ID,
-      // TARGET ACTIVE USERS (Matches your 2 live subscribers)
-      included_segments: ["Active Users", "Total Subscriptions"],
       headings: { en: title },
       contents: { en: message },
       url: url || 'https://www.quicktapsolutions.com'
     };
+
+    // If subscriptionId is provided, send push ONLY to that specific tester device
+    if (subscriptionId) {
+      payload.include_subscription_ids = [subscriptionId];
+    } else {
+      // Fallback: target active users globally
+      payload.included_segments = ["Active Users", "Total Subscriptions"];
+    }
 
     const response = await fetch('https://onesignal.com/api/v1/notifications', {
       method: 'POST',

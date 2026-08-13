@@ -32,13 +32,35 @@
       await OneSignal.init({
         appId: "20ffec5d-47ec-47a2-904f-6ad334514f44",
       });
+
+      // Check if already subscribed on page load
+      if (OneSignal.User && OneSignal.User.PushSubscription && OneSignal.User.PushSubscription.optedIn) {
+        setAdminButtonState();
+      }
     });
+
+    function setAdminButtonState() {
+      const btn = document.getElementById('broadcast-btn');
+      if (btn) {
+        btn.innerHTML = '<span>🚀</span> OPEN LIVE PUSH ADMIN APP ➔';
+        btn.className = 'flex items-center justify-center gap-2 w-full bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold py-4 px-4 rounded-2xl text-xs tracking-wider uppercase transition-all shadow-[0_0_25px_rgba(16,185,129,0.4)] border border-emerald-400/30 active:scale-98 cursor-pointer';
+        btn.onclick = function() {
+          window.location.href = 'admin.html';
+        };
+      }
+    }
   </script>
 </head>
 <body class="bg-[#030712] text-white min-h-screen flex flex-col items-center justify-center p-4 antialiased font-sans">
 
   <!-- Main Container -->
   <main class="w-full max-w-md space-y-4 my-6">
+
+    <!-- In-App Browser Warning Banner for Facebook Users -->
+    <div id="fb-browser-notice" class="hidden bg-amber-500/10 border border-amber-500/30 text-amber-300 text-[11px] p-3 rounded-xl text-center space-y-1">
+      <p class="font-bold">💡 Testing Push Notifications?</p>
+      <p>Tap <b>⋮</b> or <b>···</b> in top right and select <b>"Open in Chrome"</b> or <b>"Open in Safari"</b> for full live demo support.</p>
+    </div>
 
     <!-- Logo (2x Bigger) -->
     <div class="flex justify-center items-center pb-2">
@@ -62,7 +84,7 @@
       </a>
     </div>
 
-    <!-- Video Showcase Container (Clean Video, No Default Controls) -->
+    <!-- Video Showcase Container -->
     <div class="relative rounded-2xl overflow-hidden border border-slate-800 shadow-2xl bg-black group">
       <video id="intro-video" src="intro.mp4" autoplay loop muted playsinline class="w-full h-52 object-cover"></video>
       <button id="audio-toggle-btn" class="absolute bottom-3 right-3 bg-[#0f172a]/90 hover:bg-[#1e293b] backdrop-blur-md border border-cyan-500/40 text-cyan-300 text-[10px] font-bold px-3 py-1.5 rounded-full flex items-center gap-1.5 shadow-lg transition-all active:scale-95 cursor-pointer z-10">
@@ -113,7 +135,7 @@
         </div>
         <div class="flex items-start gap-3">
           <span class="flex-shrink-0 w-6 h-6 rounded-full bg-slate-800 text-cyan-400 font-bold flex items-center justify-center text-[11px] border border-slate-700">3</span>
-          <p class="leading-relaxed"><strong class="text-white">Enable Revenue Broadcasts:</strong> Enable 'Revenue Broadcasts' to receive direct real-time updates and launches.</p>
+          <p class="leading-relaxed"><strong class="text-white">Enable Revenue Broadcasts:</strong> Enable 'Revenue Broadcasts' to test live lock screen push messages.</p>
         </div>
       </div>
     </div>
@@ -124,9 +146,8 @@
 
   <!-- Interactive Scripts -->
   <script>
-    // OneSignal Native Permission Trigger (With In-App Browser Handling)
+    // OneSignal Native Permission Trigger
     async function subscribeToNotifications() {
-      // Detect Facebook / Instagram / LinkedIn in-app browsers
       const isInAppBrowser = /FBAN|FBAV|Instagram|LinkedInApp/i.test(navigator.userAgent);
 
       if (isInAppBrowser) {
@@ -134,22 +155,30 @@
         return;
       }
 
-      if (window.OneSignal) {
+      window.OneSignalDeferred = window.OneSignalDeferred || [];
+      window.OneSignalDeferred.push(async function(OneSignal) {
         try {
-          const permission = await window.OneSignal.Notifications.requestPermission();
+          const permission = await OneSignal.Notifications.requestPermission();
           console.log("Push permission status:", permission);
           if (permission) {
-            alert("You are subscribed to Revenue Broadcasts!");
+            setAdminButtonState();
+            window.location.href = "admin.html";
           }
         } catch (err) {
           console.log("OneSignal push error:", err);
+          alert("Unable to request notification permission.");
         }
-      } else {
-        alert("Push notification system is still loading. Please try again in a second.");
-      }
+      });
     }
 
     document.addEventListener('DOMContentLoaded', async () => {
+      // Show In-App Browser Warning if opened inside FB/Instagram
+      const isInAppBrowser = /FBAN|FBAV|Instagram|LinkedInApp/i.test(navigator.userAgent);
+      if (isInAppBrowser) {
+        const fbNotice = document.getElementById('fb-browser-notice');
+        if (fbNotice) fbNotice.classList.remove('hidden');
+      }
+
       // Audio Unmute Handler
       const video = document.getElementById('intro-video');
       const audioBtn = document.getElementById('audio-toggle-btn');
@@ -168,7 +197,7 @@
           } else {
             video.muted = true;
             audioText.innerText = 'TAP FOR AUDIO';
-            audioIcon.innerText = '0';
+            audioIcon.innerText = '🔈';
             audioBtn.classList.remove('border-emerald-500', 'text-emerald-400');
           }
         });

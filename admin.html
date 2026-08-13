@@ -3,11 +3,22 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>QuickTap Admin</title>
+  <title>QuickTap Live Push Controller</title>
 
-  <!-- Self-contained PNG Icon (Prevents 404 shortcut deletion on iOS/Android) -->
+  <!-- Self-contained PNG Icon -->
   <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230b132b'/><text y='65' x='15' font-size='60'>🚀</text></svg>">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230b132b'/><text y='65' x='15' font-size='60'>🚀</text></svg>">
+
+  <!-- OneSignal Push Notifications SDK v16 -->
+  <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+  <script>
+    window.OneSignalDeferred = window.OneSignalDeferred || [];
+    OneSignalDeferred.push(async function(OneSignal) {
+      await OneSignal.init({
+        appId: "20ffec5d-47ec-47a2-904f-6ad334514f44",
+      });
+    });
+  </script>
 
   <style>
     * {
@@ -37,11 +48,39 @@
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
     }
 
+    .btn-back {
+      display: inline-block;
+      width: 100%;
+      text-align: center;
+      padding: 10px;
+      background-color: #0b132b;
+      color: #4cc9f0;
+      border: 1px solid #3a506b;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-decoration: none;
+      margin-bottom: 20px;
+      transition: background-color 0.2s;
+    }
+
+    .btn-back:hover {
+      background-color: #142248;
+    }
+
     .admin-card h2 {
       font-size: 1.5rem;
       text-align: center;
-      margin-bottom: 24px;
+      margin-bottom: 8px;
       color: #ffffff;
+    }
+
+    .subtitle {
+      font-size: 0.85rem;
+      color: #a0aec0;
+      text-align: center;
+      margin-bottom: 24px;
+      line-height: 1.4;
     }
 
     .form-group {
@@ -75,7 +114,7 @@
 
     .form-group textarea {
       resize: vertical;
-      min-height: 100px;
+      min-height: 80px;
     }
 
     .btn-submit {
@@ -98,6 +137,7 @@
     .btn-submit:disabled {
       background-color: #4b5563;
       cursor: not-allowed;
+      opacity: 0.6;
     }
 
     #statusMessage {
@@ -125,25 +165,23 @@
 <body>
 
   <div class="admin-card">
-    <h2>🚀 Send Push Broadcast</h2>
+    <a href="index.html" class="btn-back">← Back to Digital Card</a>
+
+    <h2>⚙️ Live Push Controller</h2>
+    <p class="subtitle">Type a demo message below and tap send to test a direct push notification on your device!</p>
 
     <form id="broadcastForm">
       <div class="form-group">
-        <label for="adminPin">Admin Passcode / PIN</label>
-        <input type="password" id="adminPin" placeholder="Enter PIN" required>
-      </div>
-
-      <div class="form-group">
         <label for="title">Notification Title</label>
-        <input type="text" id="title" placeholder="e.g. Flash Sale Today!" required>
+        <input type="text" id="title" value="🔥 QuickTap Live Special!" placeholder="e.g. Flash Sale Today!" required>
       </div>
 
       <div class="form-group">
         <label for="message">Notification Message</label>
-        <textarea id="message" placeholder="e.g. Show this alert for 15% off at checkout." required></textarea>
+        <textarea id="message" placeholder="e.g. Show this alert for 15% off at checkout." required>20% off your next service call when you mention this notification!</textarea>
       </div>
 
-      <button type="submit" class="btn-submit" id="submitBtn">Send Broadcast Now</button>
+      <button type="submit" class="btn-submit" id="submitBtn">📲 Send Push To My Screen</button>
     </form>
 
     <div id="statusMessage"></div>
@@ -157,42 +195,61 @@
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
 
-      const adminPin = document.getElementById('adminPin').value;
       const title = document.getElementById('title').value;
       const message = document.getElementById('message').value;
 
       submitBtn.disabled = true;
-      submitBtn.innerText = 'Sending...';
+      submitBtn.innerText = 'Sending to your screen...';
       statusMsg.style.display = 'none';
 
-      try {
-        const response = await fetch('/api/send-push', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ adminPin, title, message })
-        });
-
-        const data = await response.json();
-
-        if (response.ok) {
-          statusMsg.className = 'status-success';
-          statusMsg.innerText = 'Broadcast sent successfully!';
-          document.getElementById('title').value = '';
-          document.getElementById('message').value = '';
-        } else {
-          statusMsg.className = 'status-error';
-          statusMsg.innerText = data.error || 'Failed to send broadcast.';
+      window.OneSignalDeferred = window.OneSignalDeferred || [];
+      window.OneSignalDeferred.push(async function(OneSignal) {
+        // Retrieve the user's specific Subscription ID
+        let subscriptionId = null;
+        if (OneSignal.User && OneSignal.User.PushSubscription) {
+          subscriptionId = OneSignal.User.PushSubscription.id;
         }
-      } catch (err) {
-        statusMsg.className = 'status-error';
-        statusMsg.innerText = 'Network error. Please try again.';
-      } finally {
-        statusMsg.style.display = 'block';
-        submitBtn.disabled = false;
-        submitBtn.innerText = 'Send Broadcast Now';
-      }
+
+        if (!subscriptionId) {
+          statusMsg.className = 'status-error';
+          statusMsg.innerText = '⚠️ Please tap "ACTIVATE REVENUE BROADCASTS" on the main card first to allow notifications!';
+          statusMsg.style.display = 'block';
+          submitBtn.disabled = false;
+          submitBtn.innerText = '📲 Send Push To My Screen';
+          return;
+        }
+
+        try {
+          const response = await fetch('/api/send-push', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ title, message, subscriptionId })
+          });
+
+          const data = await response.json();
+
+          if (response.ok) {
+            statusMsg.className = 'status-success';
+            statusMsg.innerText = '🚀 Sent! Check the top of your screen or lock screen.';
+          } else {
+            statusMsg.className = 'status-error';
+            statusMsg.innerText = data.error || 'Failed to send broadcast.';
+          }
+        } catch (err) {
+          statusMsg.className = 'status-error';
+          statusMsg.innerText = 'Network error. Please try again.';
+        } finally {
+          statusMsg.style.display = 'block';
+
+          // 5-second cooldown to prevent API spam
+          setTimeout(() => {
+            submitBtn.disabled = false;
+            submitBtn.innerText = '📲 Send Push To My Screen';
+          }, 5000);
+        }
+      });
     });
   </script>
 
