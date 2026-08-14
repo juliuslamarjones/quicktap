@@ -74,10 +74,20 @@
       </a>
     </div>
 
-    <!-- Main Action Button -->
+    <!-- Illuminated Main Action Button -->
     <div class="space-y-3 pt-1">
-      <button id="broadcast-btn" onclick="subscribeToNotifications()" class="flex items-center justify-center gap-2 w-full bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold py-4 px-4 rounded-2xl text-xs tracking-wider uppercase transition-all shadow-[0_0_25px_rgba(16,185,129,0.4)] border border-emerald-400/30 active:scale-98 cursor-pointer">
-        <span>⚡</span> SUBSCRIBE TO RESIDENT ALERTS
+      <button id="broadcast-btn" onclick="subscribeToNotifications()" class="relative overflow-hidden group flex items-center justify-center gap-3 w-full bg-gradient-to-r from-emerald-600 via-emerald-500 to-emerald-600 text-white font-extrabold py-4 px-4 rounded-2xl text-xs tracking-wider uppercase transition-all duration-300 shadow-[0_0_20px_rgba(16,185,129,0.5)] hover:shadow-[0_0_35px_rgba(16,185,129,0.8)] border border-emerald-300/40 active:scale-95 cursor-pointer">
+        
+        <!-- Live Glowing LED Ring -->
+        <span class="relative flex h-2.5 w-2.5">
+          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-300 opacity-75"></span>
+          <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-white"></span>
+        </span>
+
+        <span class="relative z-10 tracking-widest">SUBSCRIBE TO RESIDENT ALERTS</span>
+        
+        <!-- Light Beam Sweep -->
+        <span class="absolute inset-0 w-1/2 h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12 -translate-x-full group-hover:translate-x-[300%] transition-transform duration-1000"></span>
       </button>
     </div>
 
