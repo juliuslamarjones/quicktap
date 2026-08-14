@@ -3,14 +3,23 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Knightsbridge Apartments | Resident Hub</title>
+  <title>Julius Lamar Jones | Executive Digital Profile</title>
 
-  <!-- Open Graph Preview Tags -->
+  <!-- Open Graph / Facebook Preview Tags -->
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://quicktapsolutions.com/knightsbridge" />
-  <meta property="og:title" content="Knightsbridge Apartments | Resident Lock-Screen Alert System" />
-  <meta property="og:description" content="Tap to access official property alerts, virtual tours, and community announcements." />
-  <meta property="og:image" content="wilhoit_logo.png" />
+  <meta property="og:url" content="https://quicktapsolutions.com/" />
+  <meta property="og:title" content="Julius Lamar Jones | Executive Digital Profile" />
+  <meta property="og:description" content="Tap to connect! View my executive digital profile, watch my quick intro video, and save my contact info." />
+  <meta property="og:image" content="https://quicktapsolutions.com/logo_qt.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+
+  <!-- Twitter / X Preview Tags -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:url" content="https://quicktapsolutions.com/" />
+  <meta name="twitter:title" content="Julius Lamar Jones | Executive Digital Profile" />
+  <meta name="twitter:description" content="Tap to connect! View my executive digital profile and save my contact info." />
+  <meta name="twitter:image" content="https://quicktapsolutions.com/logo_qt.png" />
 
   <link rel="manifest" href="manifest.json" />
   <script src="https://cdn.tailwindcss.com"></script>
@@ -24,6 +33,7 @@
         appId: "20ffec5d-47ec-47a2-904f-6ad334514f44",
       });
 
+      // Check if already subscribed on page load
       if (OneSignal.User && OneSignal.User.PushSubscription && OneSignal.User.PushSubscription.optedIn) {
         setAdminButtonState();
       }
@@ -32,7 +42,7 @@
     function setAdminButtonState() {
       const btn = document.getElementById('broadcast-btn');
       if (btn) {
-        btn.innerHTML = '<span>🚀</span> OPEN LIVE RESIDENT ALERT ADMIN ➔';
+        btn.innerHTML = '<span>🚀</span> OPEN LIVE PUSH ADMIN APP ➔';
         btn.className = 'flex items-center justify-center gap-2 w-full bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold py-4 px-4 rounded-2xl text-xs tracking-wider uppercase transition-all shadow-[0_0_25px_rgba(16,185,129,0.4)] border border-emerald-400/30 active:scale-98 cursor-pointer';
         btn.onclick = function() {
           window.location.href = 'admin.html';
@@ -41,119 +51,107 @@
     }
   </script>
 </head>
-<body class="bg-[#0b1120] text-white min-h-screen flex flex-col items-center justify-center p-4 antialiased font-sans">
+<body class="bg-[#030712] text-white min-h-screen flex flex-col items-center justify-center p-4 antialiased font-sans">
 
   <!-- Main Container -->
-  <main class="w-full max-w-md space-y-4 my-4">
+  <main class="w-full max-w-md space-y-4 my-6">
 
-    <!-- In-App Browser Warning Banner -->
+    <!-- In-App Browser Warning Banner for Facebook Users -->
     <div id="fb-browser-notice" class="hidden bg-amber-500/10 border border-amber-500/30 text-amber-300 text-[11px] p-3 rounded-xl text-center space-y-1">
       <p class="font-bold">💡 Testing Push Notifications?</p>
       <p>Tap <b>⋮</b> or <b>···</b> in top right and select <b>"Open in Chrome"</b> or <b>"Open in Safari"</b> for full live demo support.</p>
     </div>
 
-    <!-- HUGE Corporate Branding Logo -->
-    <div class="flex justify-center items-center pt-2 pb-1">
-      <div class="bg-white/95 p-4 rounded-3xl w-full flex justify-center shadow-[0_0_30px_rgba(255,255,255,0.15)] border border-white/20">
-        <img id="company-logo" src="wilhoit_logo.png" alt="Wilhoit Properties Logo" class="h-28 w-auto object-contain drop-shadow" />
-      </div>
+    <!-- Logo (Enlarged Header Logo) -->
+    <div class="flex justify-center items-center pb-2">
+      <img id="company-logo" src="wilhoit_logo.png" alt="Wilhoit Properties Logo" class="h-28 w-auto object-contain drop-shadow-[0_0_20px_rgba(6,182,212,0.7)]" />
     </div>
 
-    <!-- Header Titles -->
-    <div class="text-center space-y-1 pt-1">
-      <h1 class="text-xl font-extrabold tracking-wider uppercase text-white">KNIGHTSBRIDGE APARTMENTS</h1>
-      <p class="text-slate-400 text-[11px] font-medium tracking-tight">(3455 FM 1960 Rd W, Humble, TX 77338)</p>
-      <h2 class="text-cyan-400 text-sm font-bold pt-1">Resident Lock-Screen Alert System & Community Hub</h2>
-    </div>
-
-    <!-- Main Feature Button -->
-    <div class="pt-1">
-      <button id="broadcast-btn" onclick="subscribeToNotifications()" class="flex items-center justify-center gap-2 w-full bg-blue-600 hover:bg-blue-500 text-white font-extrabold py-4 px-4 rounded-2xl text-xs tracking-wider uppercase transition-all shadow-[0_0_25px_rgba(37,99,235,0.4)] border border-blue-400/30 active:scale-98 cursor-pointer">
-        <span>⚡</span> [ SUBSCRIBE TO INSTANT LOCK-SCREEN ALERTS ]
-      </button>
+    <!-- Header Profile -->
+    <div class="text-center space-y-1">
+      <h1 id="user-name" class="text-3xl font-extrabold tracking-tight text-white">Julius Lamar Jones</h1>
+      <p id="user-title" class="text-cyan-400 text-sm font-bold tracking-widest uppercase">DIGITAL ARCHITECT</p>
+      <p class="text-slate-400 text-xs font-medium">QuickTap Solutions Executive Hub</p>
     </div>
 
     <!-- Quick Contact Pills -->
-    <div class="grid grid-cols-2 gap-2 text-[11px]">
-      <a id="call-btn" href="tel:8882915484" class="flex items-center justify-center gap-1.5 bg-[#1e293b]/80 hover:bg-[#334155] text-slate-200 py-2 px-3 rounded-xl font-semibold border border-slate-700/60 transition-all text-center">
-        <span>Phone:</span> <span class="text-cyan-400 font-bold">(888) 291-5484</span>
+    <div class="grid grid-cols-2 gap-3 pt-1">
+      <a id="call-btn" href="tel:8329025417" class="flex items-center justify-center gap-2 bg-[#0f172a] hover:bg-[#1e293b] text-slate-200 py-2.5 px-4 rounded-xl text-xs font-semibold border border-slate-800 transition-all shadow-md">
+        <span class="text-pink-500">📞</span> (832) 902-5417
       </a>
-      <a id="email-btn" href="mailto:customerservice@wilhoitproperties.com" class="flex items-center justify-center gap-1.5 bg-[#1e293b]/80 hover:bg-[#334155] text-slate-200 py-2 px-3 rounded-xl font-semibold border border-slate-700/60 transition-all truncate">
-        <span>Email:</span> <span class="text-cyan-400 font-bold truncate">customerservice@wilhoitproperties.com</span>
+      <a id="email-btn" href="mailto:julius@quicktapsolutions.com" class="flex items-center justify-center gap-2 bg-[#0f172a] hover:bg-[#1e293b] text-slate-200 py-2.5 px-4 rounded-xl text-xs font-semibold border border-slate-800 transition-all shadow-md">
+        <span class="text-slate-400">✉️</span> Email Julius
       </a>
     </div>
 
-    <!-- Property Showcase Grid -->
-    <div class="bg-[#0f172a]/90 border border-slate-800 rounded-2xl p-4 space-y-3 shadow-2xl">
-      <div class="text-center border-b border-slate-800/80 pb-2">
-        <span class="text-xs font-bold text-slate-200 uppercase tracking-widest">PROPERTY SHOWCASE</span>
-      </div>
-
-      <!-- 4 Photo Grid with Titles -->
-      <div class="grid grid-cols-4 gap-2 pt-1">
-        <div class="space-y-1 text-center">
-          <div class="rounded-lg overflow-hidden border border-slate-700 h-16">
-            <img src="knightsbridge_pool.jpg" alt="Pool" class="w-full h-full object-cover" />
-          </div>
-          <p class="text-[9px] text-slate-300 font-semibold truncate">Pool (large)</p>
-        </div>
-
-        <div class="space-y-1 text-center">
-          <div class="rounded-lg overflow-hidden border border-slate-700 h-16">
-            <img src="knightsbridge_sign.jpg" alt="Entrance" class="w-full h-full object-cover" />
-          </div>
-          <p class="text-[9px] text-slate-300 font-semibold truncate">Entrance 6</p>
-        </div>
-
-        <div class="space-y-1 text-center">
-          <div class="rounded-lg overflow-hidden border border-slate-700 h-16">
-            <img src="kitchen_overview.jpg" alt="Kitchen" class="w-full h-full object-cover" />
-          </div>
-          <p class="text-[9px] text-slate-300 font-semibold truncate">Kitchen 1</p>
-        </div>
-
-        <div class="space-y-1 text-center">
-          <div class="rounded-lg overflow-hidden border border-slate-700 h-16">
-            <img src="bedroom_view.jpg" alt="Bedroom" class="w-full h-full object-cover" />
-          </div>
-          <p class="text-[9px] text-slate-300 font-semibold truncate">Bedroom 3</p>
-        </div>
-      </div>
+    <!-- Video Showcase Container -->
+    <div class="relative rounded-2xl overflow-hidden border border-slate-800 shadow-2xl bg-black group">
+      <video id="intro-video" src="intro.mp4" autoplay loop muted playsinline class="w-full h-52 object-cover"></video>
+      <button id="audio-toggle-btn" class="absolute bottom-3 right-3 bg-[#0f172a]/90 hover:bg-[#1e293b] backdrop-blur-md border border-cyan-500/40 text-cyan-300 text-[10px] font-bold px-3 py-1.5 rounded-full flex items-center gap-1.5 shadow-lg transition-all active:scale-95 cursor-pointer z-10">
+        <span id="audio-icon">🔈</span> <span id="audio-text">TAP FOR AUDIO</span>
+      </button>
     </div>
 
-    <!-- Resident Developer Credit Box -->
-    <div class="bg-[#0f172a]/90 border border-slate-800 rounded-2xl p-4 text-center space-y-1 shadow-2xl">
-      <p class="text-[10px] text-slate-300 font-bold uppercase tracking-widest">RESIDENT DEVELOPER CREDIT</p>
-      <p class="text-xs text-slate-300 leading-relaxed px-2">
-        Designed and implemented by Julius Lamar Jones, experienced software developer and resident at Knightsbridge Apartments (Humble, TX).
-      </p>
+    <!-- Main Action Buttons -->
+    <div class="space-y-3 pt-1">
+      <button id="broadcast-btn" onclick="subscribeToNotifications()" class="flex items-center justify-center gap-2 w-full bg-blue-600 hover:bg-blue-500 text-white font-extrabold py-4 px-4 rounded-2xl text-xs tracking-wider uppercase transition-all shadow-[0_0_25px_rgba(37,99,235,0.4)] border border-blue-400/30 active:scale-98 cursor-pointer">
+        <span>⚡</span> ACTIVATE REVENUE BROADCASTS
+      </button>
+      <a id="vcard-btn" href="contact.vcf" download class="flex items-center justify-center gap-2 w-full bg-[#0f172a] hover:bg-[#1e293b] text-slate-200 font-extrabold py-3.5 px-4 rounded-2xl text-xs tracking-wider uppercase transition-all border border-slate-800 shadow-lg active:scale-98">
+        <span>🎴</span> SAVE CONTACT CARD
+      </a>
+    </div>
+
+    <!-- Feature Pill Badge -->
+    <div class="flex justify-center pt-1">
+      <div class="bg-[#0f172a] border border-cyan-500/30 rounded-full px-4 py-1.5 flex items-center gap-2 shadow-md">
+        <span class="text-yellow-400 text-xs">💡</span>
+        <span class="text-xs font-bold text-slate-200">The Real Power of QuickTap</span>
+      </div>
     </div>
 
     <!-- QR Code Section Box -->
-    <div class="bg-[#0f172a]/90 border border-slate-800 rounded-2xl p-5 text-center space-y-3 shadow-2xl">
-      <p class="text-xs font-bold text-slate-200 uppercase tracking-widest">THE POWER OF QUICKTAP SOLUTIONS</p>
-      <div class="flex items-center justify-center gap-4 text-left pt-1">
-        <div class="p-2 bg-white rounded-xl shadow-lg flex-shrink-0">
-          <img id="qr-code" src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=https://quicktapsolutions.com/knightsbridge" alt="QR Code" class="w-24 h-24 object-contain" />
+    <div class="bg-[#0b1329]/80 border border-slate-800/80 rounded-2xl p-6 text-center space-y-4 shadow-xl">
+      <p class="text-xs font-bold text-slate-300 uppercase tracking-widest">SCAN TO SHARE CARD</p>
+      <div class="flex justify-center">
+        <div class="p-3 bg-white rounded-2xl shadow-xl inline-block">
+          <img id="qr-code" src="https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=https://quicktapsolutions.com/" alt="QR Code" class="w-36 h-36 object-contain" />
         </div>
-        <div class="space-y-1 text-[11px] text-slate-300">
-          <p class="leading-tight font-medium">Scan to access your custom community card instantly — <strong class="text-white">NO APP DOWNLOAD REQUIRED.</strong></p>
-          <p class="text-[10px] text-slate-400">Built with OneSignal Push Media.</p>
+      </div>
+      <p class="text-[11px] text-slate-400 font-medium">Point any camera here to open Julius's card directly.</p>
+    </div>
+
+    <!-- How To Connect Section Box -->
+    <div class="bg-[#0b1329]/80 border border-slate-800/80 rounded-2xl p-6 space-y-4 shadow-xl">
+      <h3 class="text-xs font-bold text-slate-300 uppercase tracking-widest text-center">HOW TO CONNECT</h3>
+      <div class="space-y-4 text-xs text-slate-300">
+        <div class="flex items-start gap-3">
+          <span class="flex-shrink-0 w-6 h-6 rounded-full bg-slate-800 text-cyan-400 font-bold flex items-center justify-center text-[11px] border border-slate-700">1</span>
+          <p class="leading-relaxed"><strong class="text-white">Tap To Share:</strong> Touch this card against any smartphone to launch your executive profile instantly—no apps required.</p>
+        </div>
+        <div class="flex items-start gap-3">
+          <span class="flex-shrink-0 w-6 h-6 rounded-full bg-slate-800 text-cyan-400 font-bold flex items-center justify-center text-[11px] border border-slate-700">2</span>
+          <p class="leading-relaxed"><strong class="text-white">Save Contact Card:</strong> Tap 'Save Contact Card' to store direct phone numbers, email, and links straight into their address book.</p>
+        </div>
+        <div class="flex items-start gap-3">
+          <span class="flex-shrink-0 w-6 h-6 rounded-full bg-slate-800 text-cyan-400 font-bold flex items-center justify-center text-[11px] border border-slate-700">3</span>
+          <p class="leading-relaxed"><strong class="text-white">Enable Revenue Broadcasts:</strong> Enable 'Revenue Broadcasts' to test live lock screen push messages.</p>
         </div>
       </div>
     </div>
 
     <!-- Footer -->
-    <p class="text-[10px] text-slate-500 text-center tracking-widest uppercase pt-1">Powered by QuickTap Solutions</p>
+    <p class="text-[10px] text-slate-500 text-center tracking-widest uppercase pt-2">Powered by QuickTap Solutions</p>
   </main>
 
-  <!-- Interactive Push Script -->
+  <!-- Interactive Scripts -->
   <script>
+    // OneSignal Native Permission Trigger
     async function subscribeToNotifications() {
       const isInAppBrowser = /FBAN|FBAV|Instagram|LinkedInApp/i.test(navigator.userAgent);
 
       if (isInAppBrowser) {
-        alert("To subscribe to notifications, please open this card in Chrome or Safari.");
+        alert("To activate Revenue Broadcasts, please open this card in your main browser (tap the 3 dots '⋮' at the top right and select 'Open in Chrome' or 'Open in Safari').");
         return;
       }
 
@@ -161,6 +159,7 @@
       window.OneSignalDeferred.push(async function(OneSignal) {
         try {
           const permission = await OneSignal.Notifications.requestPermission();
+          console.log("Push permission status:", permission);
           if (permission) {
             setAdminButtonState();
             window.location.href = "admin.html";
@@ -171,6 +170,55 @@
         }
       });
     }
+
+    document.addEventListener('DOMContentLoaded', async () => {
+      // Show In-App Browser Warning if opened inside FB/Instagram
+      const isInAppBrowser = /FBAN|FBAV|Instagram|LinkedInApp/i.test(navigator.userAgent);
+      if (isInAppBrowser) {
+        const fbNotice = document.getElementById('fb-browser-notice');
+        if (fbNotice) fbNotice.classList.remove('hidden');
+      }
+
+      // Audio Unmute Handler
+      const video = document.getElementById('intro-video');
+      const audioBtn = document.getElementById('audio-toggle-btn');
+      const audioText = document.getElementById('audio-text');
+      const audioIcon = document.getElementById('audio-icon');
+
+      if (video && audioBtn) {
+        audioBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          if (video.muted) {
+            video.muted = false;
+            video.play();
+            audioText.innerText = 'MUTE AUDIO';
+            audioIcon.innerText = '🔊';
+            audioBtn.classList.add('border-emerald-500', 'text-emerald-400');
+          } else {
+            video.muted = true;
+            audioText.innerText = 'TAP FOR AUDIO';
+            audioIcon.innerText = '🔈';
+            audioBtn.classList.remove('border-emerald-500', 'text-emerald-400');
+          }
+        });
+      }
+
+      // Dynamic JSON Data Sync
+      try {
+        const response = await fetch('card-data.json?cb=' + Date.now());
+        if (!response.ok) return;
+        const data = await response.json();
+        if (data.name && document.getElementById('user-name')) document.getElementById('user-name').innerText = data.name;
+        if (data.title && document.getElementById('user-title')) document.getElementById('user-title').innerText = data.title;
+        if (data.phone && document.getElementById('call-btn')) document.getElementById('call-btn').href = `tel:${data.phone}`;
+        if (data.email && document.getElementById('email-btn')) document.getElementById('email-btn').href = `mailto:${data.email}`;
+        if (data.vcardUrl && document.getElementById('vcard-btn')) document.getElementById('vcard-btn').href = data.vcardUrl;
+        if (data.videoUrl && document.getElementById('intro-video')) document.getElementById('intro-video').src = data.videoUrl;
+        if (data.logoUrl && document.getElementById('company-logo')) document.getElementById('company-logo').src = data.logoUrl;
+      } catch (err) {
+        console.log('Using default inline card values:', err);
+      }
+    });
   </script>
 </body>
 </html>
