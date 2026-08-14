@@ -108,6 +108,7 @@
     async function sendPushNotification() {
       const title = document.getElementById('alert-title').value.trim();
       const body = document.getElementById('alert-body').value.trim();
+      const url = document.getElementById('alert-url').value.trim();
       const statusDiv = document.getElementById('status-message');
 
       if (!title || !body) {
@@ -121,10 +122,40 @@
       statusDiv.innerText = "⏳ Dispatching push notification...";
       statusDiv.classList.remove('hidden');
 
-      setTimeout(() => {
-        statusDiv.className = "text-center text-xs font-bold py-2 px-3 rounded-xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-300";
-        statusDiv.innerText = "🚀 Broadcast sent successfully to subscribed residents!";
-      }, 1200);
+      const appId = "20ffec5d-47ec-47a2-904f-6ad334514f44";
+      const apiKey = "os_v2_app_ed76yxkh5rd2fecpnljtiukpitd723vntvlu6nu5nrngox6mvx4fwilow4sbx573v2ahhncod4wfzvtoyf7qszmje5qgoxsrhckxqei";
+
+      try {
+        const response = await fetch("https://onesignal.com/api/v1/notifications", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json; charset=utf-8",
+            "Authorization": `Key ${apiKey}`
+          },
+          body: JSON.stringify({
+            app_id: appId,
+            included_segments: ["Total Subscriptions"],
+            headings: { en: title },
+            contents: { en: body },
+            url: url || "https://quicktapsolutions.com/knightsbridge"
+          })
+        });
+
+        const data = await response.json();
+
+        if (response.ok && data.id) {
+          statusDiv.className = "text-center text-xs font-bold py-2 px-3 rounded-xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-300";
+          statusDiv.innerText = `🚀 Broadcast sent! (${data.recipients || 0} recipients reached)`;
+        } else {
+          console.error("OneSignal Error:", data);
+          statusDiv.className = "text-center text-xs font-bold py-2 px-3 rounded-xl bg-red-500/20 border border-red-500/40 text-red-300";
+          statusDiv.innerText = "❌ Failed: " + (data.errors ? data.errors[0] : "API Authorization Error");
+        }
+      } catch (err) {
+        console.error("Network Error:", err);
+        statusDiv.className = "text-center text-xs font-bold py-2 px-3 rounded-xl bg-red-500/20 border border-red-500/40 text-red-300";
+        statusDiv.innerText = "❌ Network error sending broadcast.";
+      }
     }
   </script>
 </body>
