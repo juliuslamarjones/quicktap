@@ -38,6 +38,37 @@
       <p class="text-xs uppercase font-bold text-emerald-400 tracking-widest">Resident Portal & Digital Pass</p>
     </div>
 
+    <!-- Front Landing Card / Digital Resident Pass -->
+    <div class="bg-slate-900/80 border border-emerald-900/60 rounded-3xl p-6 md:p-8 shadow-2xl backdrop-blur-md space-y-6">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+        <div>
+          <span class="text-[10px] font-extrabold uppercase tracking-widest text-emerald-400">Official Pass</span>
+          <h2 class="text-xl font-bold text-slate-100">Resident Digital Access</h2>
+        </div>
+        <span class="px-3 py-1 bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 rounded-full text-xs font-bold flex items-center space-x-1.5">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+          <span>ACTIVE</span>
+        </span>
+      </div>
+
+      <div class="space-y-4 text-sm text-slate-300">
+        <div class="bg-slate-950/80 p-4 rounded-2xl border border-slate-800/80 space-y-2">
+          <div class="flex justify-between text-xs">
+            <span class="text-slate-500 uppercase font-semibold">Community</span>
+            <span class="font-bold text-slate-200">Knightsbridge Apartments</span>
+          </div>
+          <div class="flex justify-between text-xs">
+            <span class="text-slate-500 uppercase font-semibold">Status</span>
+            <span class="font-bold text-emerald-400">Verified Resident</span>
+          </div>
+          <div class="flex justify-between text-xs">
+            <span class="text-slate-500 uppercase font-semibold">Notifications</span>
+            <span class="font-bold text-amber-200">Push Alerts Enabled</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- Resident Community Alerts Section (Alert Center) -->
     <div class="bg-slate-900/80 border border-emerald-900/60 rounded-3xl p-6 shadow-xl backdrop-blur-md space-y-4">
       <div class="flex items-center justify-between border-b border-slate-800 pb-3">
@@ -62,7 +93,6 @@
   </footer>
 
   <script>
-    // Function to render saved alerts onto the page
     function loadSavedAlerts() {
       const feed = document.getElementById('notifications-feed');
       const countBadge = document.getElementById('alert-count');
@@ -88,19 +118,16 @@
       }
     }
 
-    // Helper to sanitize HTML input
     function escapeHtml(text) {
       const div = document.createElement('div');
       div.innerText = text;
       return div.innerHTML;
     }
 
-    // Save new incoming notification to local storage
     function saveNotification(title, body) {
       if (!title || !body) return;
       const saved = JSON.parse(localStorage.getItem('knightsbridge_alerts') || '[]');
       
-      // Avoid duplicate title/body entries back to back
       if (saved.length > 0 && saved[0].title === title && saved[0].body === body) return;
 
       const newAlert = {
@@ -110,28 +137,24 @@
       };
       
       saved.unshift(newAlert);
-      const trimmed = saved.slice(0, 10); // Keep last 10 notifications
+      const trimmed = saved.slice(0, 10);
       localStorage.setItem('knightsbridge_alerts', JSON.stringify(trimmed));
       loadSavedAlerts();
     }
 
-    // OneSignal Listener Setup
     window.OneSignalDeferred = window.OneSignalDeferred || [];
     OneSignalDeferred.push(function(OneSignal) {
-      // Save notification when displayed in foreground
       OneSignal.Notifications.addEventListener('foregroundWillDisplay', function(event) {
         const notification = event.notification;
         saveNotification(notification.title, notification.body);
       });
 
-      // Save notification when clicked
       OneSignal.Notifications.addEventListener('click', function(event) {
         const notification = event.notification;
         saveNotification(notification.title, notification.body);
       });
     });
 
-    // Initial load on page view
     document.addEventListener('DOMContentLoaded', loadSavedAlerts);
   </script>
 </body>
