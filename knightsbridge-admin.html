@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Knightsbridge Admin | Resident Alert Control</title>
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- OneSignal Push Notifications SDK -->
+  <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+  <script>
+    window.OneSignalDeferred = window.OneSignalDeferred || [];
+    OneSignalDeferred.push(async function(OneSignal) {
+      await OneSignal.init({
+        appId: "20ffec5d-47ec-47a2-904f-6ad334514f44",
+      });
+    });
+  </script>
+</head>
+<body class="bg-[#091e13] text-white min-h-screen flex flex-col items-center justify-center p-4 antialiased font-sans">
+
+  <!-- Main Container -->
+  <main class="w-full max-w-md space-y-4 my-6">
+
+    <!-- Header & Logo -->
+    <div class="flex justify-center items-center py-2">
+      <img src="wilhoit_logo.png" alt="Wilhoit Properties Logo" class="h-20 w-auto max-w-[240px] object-contain drop-shadow-[0_0_15px_rgba(255,255,255,0.25)]" />
+    </div>
+
+    <div class="text-center space-y-1">
+      <h1 class="text-2xl font-extrabold tracking-tight text-amber-100">Resident Alert Admin</h1>
+      <p class="text-emerald-400 text-xs font-bold tracking-widest uppercase">Knightsbridge Apartments Portal</p>
+      <p class="text-emerald-100/70 text-xs font-medium">Send Live Lock-Screen Push Notifications</p>
+    </div>
+
+    <!-- Admin Form Card -->
+    <div class="bg-[#123321]/90 border border-emerald-800/80 rounded-2xl p-6 space-y-4 shadow-xl">
+      
+      <!-- Alert Title Input -->
+      <div class="space-y-1.5">
+        <label for="alert-title" class="block text-xs font-bold text-amber-200 uppercase tracking-widest">
+          Notification Title
+        </label>
+        <input 
+          type="text" 
+          id="alert-title" 
+          placeholder="e.g., URGENT: Building Elevator Out of Service" 
+          class="w-full bg-[#091e13] text-emerald-100 placeholder-emerald-300/40 border border-emerald-700/80 rounded-xl px-3.5 py-3 text-xs focus:outline-none focus:border-emerald-400 transition-all"
+        />
+      </div>
+
+      <!-- Alert Message Input -->
+      <div class="space-y-1.5">
+        <label for="alert-body" class="block text-xs font-bold text-amber-200 uppercase tracking-widest">
+          Message Details
+        </label>
+        <textarea 
+          id="alert-body" 
+          rows="3" 
+          placeholder="e.g., The main elevator is temporarily down for service. Maintenance is on-site resolving the issue." 
+          class="w-full bg-[#091e13] text-emerald-100 placeholder-emerald-300/40 border border-emerald-700/80 rounded-xl px-3.5 py-3 text-xs focus:outline-none focus:border-emerald-400 transition-all resize-none"
+        ></textarea>
+      </div>
+
+      <!-- Action Link Input -->
+      <div class="space-y-1.5">
+        <label for="alert-url" class="block text-xs font-bold text-amber-200 uppercase tracking-widest">
+          Target Link URL
+        </label>
+        <input 
+          type="url" 
+          id="alert-url" 
+          value="https://quicktapsolutions.com/knightsbridge" 
+          class="w-full bg-[#091e13] text-emerald-100 placeholder-emerald-300/40 border border-emerald-700/80 rounded-xl px-3.5 py-3 text-xs focus:outline-none focus:border-emerald-400 transition-all"
+        />
+      </div>
+
+      <!-- Send Button -->
+      <button 
+        id="send-btn" 
+        onclick="sendPushNotification()" 
+        class="relative overflow-hidden group flex items-center justify-center gap-3 w-full bg-gradient-to-r from-emerald-600 via-emerald-500 to-emerald-600 text-white font-extrabold py-4 px-4 rounded-2xl text-xs tracking-wider uppercase transition-all duration-300 shadow-[0_0_20px_rgba(16,185,129,0.5)] hover:shadow-[0_0_35px_rgba(16,185,129,0.8)] border border-emerald-300/40 active:scale-95 cursor-pointer mt-2"
+      >
+        <span class="relative flex h-2.5 w-2.5">
+          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-300 opacity-75"></span>
+          <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-white"></span>
+        </span>
+        <span class="relative z-10 tracking-widest">BROADCAST ALERT TO RESIDENTS</span>
+        <span class="absolute inset-0 w-1/2 h-full bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12 -translate-x-full group-hover:translate-x-[300%] transition-transform duration-1000"></span>
+      </button>
+
+      <!-- Status Indicator -->
+      <div id="status-message" class="hidden text-center text-xs font-bold py-2 rounded-xl transition-all"></div>
+    </div>
+
+    <!-- Navigation Link Back -->
+    <div class="text-center">
+      <a href="knightsbridge.html" class="inline-flex items-center gap-1.5 text-xs text-emerald-200/80 hover:text-amber-200 transition-colors">
+        <span>←</span> Back to Resident Pass
+      </a>
+    </div>
+
+    <!-- Footer -->
+    <p class="text-[10px] text-emerald-200/50 text-center tracking-widest uppercase pt-2">Powered by QuickTap Solutions</p>
+  </main>
+
+  <script>
+    async function sendPushNotification() {
+      const title = document.getElementById('alert-title').value.trim();
+      const body = document.getElementById('alert-body').value.trim();
+      const statusDiv = document.getElementById('status-message');
+
+      if (!title || !body) {
+        statusDiv.className = "text-center text-xs font-bold py-2 px-3 rounded-xl bg-red-500/20 border border-red-500/40 text-red-300";
+        statusDiv.innerText = "⚠️ Please fill in both Title and Message.";
+        statusDiv.classList.remove('hidden');
+        return;
+      }
+
+      statusDiv.className = "text-center text-xs font-bold py-2 px-3 rounded-xl bg-amber-500/20 border border-amber-500/40 text-amber-300";
+      statusDiv.innerText = "⏳ Dispatching push notification...";
+      statusDiv.classList.remove('hidden');
+
+      setTimeout(() => {
+        statusDiv.className = "text-center text-xs font-bold py-2 px-3 rounded-xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-300";
+        statusDiv.innerText = "🚀 Broadcast sent successfully to subscribed residents!";
+      }, 1200);
+    }
+  </script>
+</body>
+</html>
