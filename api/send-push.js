@@ -29,14 +29,29 @@ export default async function handler(req, res) {
       app_id: ONESIGNAL_APP_ID,
       headings: { en: title },
       contents: { en: alertBody },
-      url: url || 'https://www.quicktapsolutions.com/knightsbridge'
+      url: url || 'https://www.quicktapsolutions.com/knightsbridge',
+
+      // Anti-Spam & Chrome Grouping Parameters
+      collapse_id: 'knightsbridge-resident-alert',
+      web_push_topic: 'knightsbridge-resident-alert',
+      ttl: 3600, // 1 hour expiration for unread alerts
+      priority: 10,
+      
+      // Action buttons to increase engagement signals for Chrome
+      web_buttons: [
+        { 
+          id: 'view-portal', 
+          text: 'View Portal', 
+          url: url || 'https://www.quicktapsolutions.com/knightsbridge' 
+        }
+      ]
     };
 
     // If subscriptionId is provided, send push ONLY to that specific tester device
     if (subscriptionId) {
       payload.include_subscription_ids = [subscriptionId];
     } else {
-      // Fallback: target active users globally
+      // Target active users globally
       payload.included_segments = ["Active Users", "Total Subscriptions"];
     }
 
