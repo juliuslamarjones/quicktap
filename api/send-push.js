@@ -3,9 +3,11 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const { title, message, url, subscriptionId } = req.body;
+  // Destructure body, allowing either 'body' or 'message' from the frontend
+  const { title, message, body, url, subscriptionId } = req.body;
+  const alertBody = body || message;
 
-  if (!title || !message) {
+  if (!title || !alertBody) {
     return res.status(400).json({ error: 'Title and message are required.' });
   }
 
@@ -13,7 +15,7 @@ export default async function handler(req, res) {
   let ONESIGNAL_API_KEY = process.env.ONESIGNAL_REST_API_KEY;
 
   if (!ONESIGNAL_API_KEY) {
-    return res.status(500).json({ error: 'ONESIGNAL_REST_API_KEY is not set on Vercel.' });
+    return res.status(500).json({ error: 'ONESIGNAL_REST_API_KEY is not set on Vercel environment variables.' });
   }
 
   ONESIGNAL_API_KEY = ONESIGNAL_API_KEY.trim().replace(/^["']|["']$/g, '');
@@ -26,8 +28,8 @@ export default async function handler(req, res) {
     const payload = {
       app_id: ONESIGNAL_APP_ID,
       headings: { en: title },
-      contents: { en: message },
-      url: url || 'https://www.quicktapsolutions.com'
+      contents: { en: alertBody },
+      url: url || 'https://www.quicktapsolutions.com/knightsbridge'
     };
 
     // If subscriptionId is provided, send push ONLY to that specific tester device
@@ -54,7 +56,7 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: `OneSignal Error: ${errDetail}` });
     }
 
-    return res.status(200).json({ success: true, result: data });
+    return res.status(200).json({ success: true, result: data, recipients: data.recipients || 0 });
 
   } catch (error) {
     return res.status(500).json({ error: `Server Error: ${error.message}` });
