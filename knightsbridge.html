@@ -38,7 +38,7 @@
       <p class="text-xs uppercase font-bold text-emerald-400 tracking-widest">Resident Portal & Digital Pass</p>
     </div>
 
-    <!-- Front Landing Card / Digital Resident Pass -->
+    <!-- Front Pass Card (Main Resident Badge) -->
     <div class="bg-slate-900/80 border border-emerald-900/60 rounded-3xl p-6 md:p-8 shadow-2xl backdrop-blur-md space-y-6">
       <div class="flex items-center justify-between border-b border-slate-800 pb-4">
         <div>
@@ -51,35 +51,62 @@
         </span>
       </div>
 
-      <div class="space-y-4 text-sm text-slate-300">
-        <div class="bg-slate-950/80 p-4 rounded-2xl border border-slate-800/80 space-y-2">
-          <div class="flex justify-between text-xs">
-            <span class="text-slate-500 uppercase font-semibold">Community</span>
-            <span class="font-bold text-slate-200">Knightsbridge Apartments</span>
-          </div>
-          <div class="flex justify-between text-xs">
-            <span class="text-slate-500 uppercase font-semibold">Status</span>
-            <span class="font-bold text-emerald-400">Verified Resident</span>
-          </div>
-          <div class="flex justify-between text-xs">
-            <span class="text-slate-500 uppercase font-semibold">Notifications</span>
-            <span class="font-bold text-amber-200">Push Alerts Enabled</span>
-          </div>
+      <!-- Resident Profile & Photo Section -->
+      <div class="flex items-center space-x-4 bg-slate-950/80 p-4 rounded-2xl border border-slate-800/80">
+        <div class="relative w-16 h-16 rounded-xl overflow-hidden border-2 border-emerald-500/50 bg-slate-900 flex-shrink-0">
+          <img id="resident-photo" src="https://placehold.co/150x150/0d1e15/emerald?text=Resident" alt="Resident Photo" class="w-full h-full object-cover">
+        </div>
+        <div class="space-y-1">
+          <h3 class="font-bold text-slate-100 text-sm">Verified Resident</h3>
+          <p class="text-xs text-emerald-400 font-semibold">Knightsbridge Senior Living</p>
+          <p class="text-[11px] text-slate-400">Pass ID: <span class="text-slate-200 font-mono">KB-88204</span></p>
+        </div>
+      </div>
+
+      <!-- Quick Details -->
+      <div class="bg-slate-950/80 p-4 rounded-2xl border border-slate-800/80 space-y-2 text-xs">
+        <div class="flex justify-between">
+          <span class="text-slate-500 uppercase font-semibold">Community</span>
+          <span class="font-bold text-slate-200">Knightsbridge Apartments</span>
+        </div>
+        <div class="flex justify-between">
+          <span class="text-slate-500 uppercase font-semibold">Status</span>
+          <span class="font-bold text-emerald-400">Verified Resident</span>
+        </div>
+        <div class="flex justify-between">
+          <span class="text-slate-500 uppercase font-semibold">Push Alerts</span>
+          <span class="font-bold text-amber-200">Active / Receiving</span>
         </div>
       </div>
     </div>
 
-    <!-- Resident Community Alerts Section (Alert Center) -->
+    <!-- Photos & Media Gallery -->
+    <div class="bg-slate-900/80 border border-emerald-900/60 rounded-3xl p-6 shadow-xl backdrop-blur-md space-y-4">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+        <h2 class="text-sm font-bold uppercase tracking-wider text-amber-200">Community Gallery & Photos</h2>
+        <span class="text-[10px] text-slate-400 uppercase font-bold">Property View</span>
+      </div>
+      <div class="grid grid-cols-2 gap-3" id="photo-gallery">
+        <div class="aspect-video bg-slate-950 rounded-xl overflow-hidden border border-slate-800">
+          <img src="https://placehold.co/400x250/0d1e15/emerald?text=Property+View" alt="Gallery Photo 1" class="w-full h-full object-cover">
+        </div>
+        <div class="aspect-video bg-slate-950 rounded-xl overflow-hidden border border-slate-800">
+          <img src="https://placehold.co/400x250/0d1e15/emerald?text=Amenities" alt="Gallery Photo 2" class="w-full h-full object-cover">
+        </div>
+      </div>
+    </div>
+
+    <!-- Notification Feed Log -->
     <div class="bg-slate-900/80 border border-emerald-900/60 rounded-3xl p-6 shadow-xl backdrop-blur-md space-y-4">
       <div class="flex items-center justify-between border-b border-slate-800 pb-3">
         <div class="flex items-center space-x-2">
           <span class="inline-block w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
-          <h2 class="text-sm font-bold uppercase tracking-wider text-amber-200">Community Alerts</h2>
+          <h2 class="text-sm font-bold uppercase tracking-wider text-amber-200">Community Alerts Log</h2>
         </div>
         <span id="alert-count" class="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-emerald-950 text-emerald-300 border border-emerald-800/50">0 Saved</span>
       </div>
 
-      <!-- Live Notification Feed Container -->
+      <!-- Dynamic Log Container -->
       <div id="notifications-feed" class="space-y-3 max-h-60 overflow-y-auto pr-1 text-slate-300 text-xs">
         <p id="no-alerts-msg" class="text-slate-500 italic text-center py-4">No recent community alerts posted.</p>
       </div>
