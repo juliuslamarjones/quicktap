@@ -3,7 +3,6 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  // Destructure body, allowing either 'body' or 'message' from the frontend
   const { title, message, body, url, subscriptionId } = req.body;
   const alertBody = body || message;
 
@@ -24,34 +23,34 @@ export default async function handler(req, res) {
     ? `Key ${ONESIGNAL_API_KEY}` 
     : `Basic ${ONESIGNAL_API_KEY}`;
 
+  const targetUrl = url || 'https://www.quicktapsolutions.com/knightsbridge.html';
+
   try {
     const payload = {
       app_id: ONESIGNAL_APP_ID,
       headings: { en: title },
       contents: { en: alertBody },
-      url: url || 'https://www.quicktapsolutions.com/knightsbridge',
+      url: targetUrl,
 
       // Anti-Spam & Chrome Grouping Parameters
       collapse_id: 'knightsbridge-resident-alert',
       web_push_topic: 'knightsbridge-resident-alert',
-      ttl: 3600, // 1 hour expiration for unread alerts
+      ttl: 3600,
       priority: 10,
       
-      // Action buttons to increase engagement signals for Chrome
+      // Action button
       web_buttons: [
         { 
           id: 'view-portal', 
           text: 'View Portal', 
-          url: url || 'https://www.quicktapsolutions.com/knightsbridge' 
+          url: targetUrl
         }
       ]
     };
 
-    // If subscriptionId is provided, send push ONLY to that specific tester device
     if (subscriptionId) {
       payload.include_subscription_ids = [subscriptionId];
     } else {
-      // Target active users globally
       payload.included_segments = ["Active Users", "Total Subscriptions"];
     }
 
