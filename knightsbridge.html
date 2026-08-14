@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -53,16 +52,16 @@
       <p>Tap <b>⋮</b> or <b>···</b> in top right and select <b>"Open in Chrome"</b> or <b>"Open in Safari"</b> for full live demo support.</p>
     </div>
 
-    <!-- Enormously Scaled Corporate Logo -->
-    <div class="flex justify-center items-center pb-2">
-      <img id="company-logo" src="wilhoit_logo.png" alt="Wilhoit Properties Logo" class="h-28 w-auto object-contain drop-shadow-[0_0_20px_rgba(6,182,212,0.7)]" />
+    <!-- Clean, Seamless Logo Header -->
+    <div class="flex justify-center items-center py-2">
+      <img id="company-logo" src="wilhoit_logo.png" alt="Wilhoit Properties Logo" class="h-24 w-auto max-w-[280px] object-contain drop-shadow-[0_0_15px_rgba(255,255,255,0.2)]" />
     </div>
 
-    <!-- Header Profile (Pure Property Branding) -->
+    <!-- Header Profile -->
     <div class="text-center space-y-1">
       <h1 class="text-2xl font-extrabold tracking-tight text-white">Knightsbridge Apartments</h1>
       <p class="text-cyan-400 text-xs font-bold tracking-widest uppercase">Wilhoit Properties Resident Hub</p>
-      <p class="text-slate-400 text-xs font-medium">Humble, Texas • Lock-Screen Alert System</p>
+      <p class="text-slate-400 text-xs font-medium">(3455 FM 1960 Rd W, Humble, TX 77338)</p>
     </div>
 
     <!-- Property Contact Pills -->
@@ -80,6 +79,50 @@
       <button id="broadcast-btn" onclick="subscribeToNotifications()" class="flex items-center justify-center gap-2 w-full bg-blue-600 hover:bg-blue-500 text-white font-extrabold py-4 px-4 rounded-2xl text-xs tracking-wider uppercase transition-all shadow-[0_0_25px_rgba(37,99,235,0.4)] border border-blue-400/30 active:scale-98 cursor-pointer">
         <span>⚡</span> SUBSCRIBE TO RESIDENT ALERTS
       </button>
+    </div>
+
+    <!-- Property Showcase Photo Gallery -->
+    <div class="bg-[#0b1329]/80 border border-slate-800/80 rounded-2xl p-4 space-y-3 shadow-xl">
+      <div class="text-center border-b border-slate-800 pb-2">
+        <span class="text-xs font-bold text-slate-300 uppercase tracking-widest">PROPERTY SHOWCASE</span>
+      </div>
+
+      <div class="grid grid-cols-2 gap-3 pt-1">
+        <div class="space-y-1">
+          <div class="rounded-xl overflow-hidden border border-slate-800 h-24">
+            <img src="knightsbridge_pool.jpg" alt="Pool Area" class="w-full h-full object-cover" />
+          </div>
+          <p class="text-[10px] text-slate-400 text-center font-medium">Resort Pool</p>
+        </div>
+
+        <div class="space-y-1">
+          <div class="rounded-xl overflow-hidden border border-slate-800 h-24">
+            <img src="knightsbridge_sign.jpg" alt="Entrance Sign" class="w-full h-full object-cover" />
+          </div>
+          <p class="text-[10px] text-slate-400 text-center font-medium">Entrance Sign</p>
+        </div>
+
+        <div class="space-y-1">
+          <div class="rounded-xl overflow-hidden border border-slate-800 h-24">
+            <img src="kitchen_overview.jpg" alt="Kitchen Overview" class="w-full h-full object-cover" />
+          </div>
+          <p class="text-[10px] text-slate-400 text-center font-medium">Kitchen Layout</p>
+        </div>
+
+        <div class="space-y-1">
+          <div class="rounded-xl overflow-hidden border border-slate-800 h-24">
+            <img src="kitchen_detail.jpg" alt="Kitchen Cabinets" class="w-full h-full object-cover" />
+          </div>
+          <p class="text-[10px] text-slate-400 text-center font-medium">Kitchen Cabinets</p>
+        </div>
+
+        <div class="col-span-2 space-y-1">
+          <div class="rounded-xl overflow-hidden border border-slate-800 h-32">
+            <img src="bedroom_view.jpg" alt="Master Bedroom" class="w-full h-full object-cover" />
+          </div>
+          <p class="text-[10px] text-slate-400 text-center font-medium">Spacious Bedroom</p>
+        </div>
+      </div>
     </div>
 
     <!-- Feature Pill Badge -->
