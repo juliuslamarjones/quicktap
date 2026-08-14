@@ -21,125 +21,71 @@
   <style>
     body {
       font-family: 'Inter', sans-serif;
-      background-color: #0d1e15;
     }
   </style>
 </head>
-<body class="min-h-screen text-slate-100 flex flex-col justify-between p-4 md:p-8">
+<body class="bg-[#091e13] text-white min-h-screen flex flex-col items-center justify-center p-4 antialiased font-sans">
 
-  <main class="max-w-xl mx-auto w-full space-y-6 my-auto">
+  <main class="w-full max-w-md space-y-4 my-6">
     
-    <!-- Header / Branding -->
-    <div class="text-center space-y-3">
-      <div class="inline-block bg-white p-3 rounded-2xl shadow-lg min-h-[50px] min-w-[150px]">
-        <img src="wilhoit_logo.png" alt="Wilhoit Properties" class="h-12 mx-auto object-contain" onerror="this.onerror=null; this.src='https://placehold.co/150x50/ffffff/0d1e15?text=Wilhoit+Properties';">
-      </div>
-      <h1 class="text-2xl md:text-3xl font-extrabold text-amber-100 tracking-tight">Knightsbridge Apartments</h1>
-      <p class="text-xs uppercase font-bold text-emerald-400 tracking-widest">Resident Portal & Digital Pass</p>
+    <!-- Logo & Header -->
+    <div class="flex justify-center items-center py-2">
+      <img src="wilhoit_logo.png" alt="Wilhoit Properties Logo" class="h-20 w-auto max-w-[240px] object-contain drop-shadow-[0_0_15px_rgba(255,255,255,0.25)]" onerror="this.onerror=null; this.src='https://placehold.co/200x60/transparent/ffffff?text=Wilhoit+Properties';" />
     </div>
 
-    <!-- Front Pass Card (Main Resident Badge) -->
-    <div class="bg-slate-900/80 border border-emerald-900/60 rounded-3xl p-6 md:p-8 shadow-2xl backdrop-blur-md space-y-6">
-      <div class="flex items-center justify-between border-b border-slate-800 pb-4">
-        <div>
-          <span class="text-[10px] font-extrabold uppercase tracking-widest text-emerald-400">Official Pass</span>
-          <h2 class="text-xl font-bold text-slate-100">Resident Digital Access</h2>
-        </div>
-        <span class="px-3 py-1 bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 rounded-full text-xs font-bold flex items-center space-x-1.5">
-          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-          <span>ACTIVE</span>
-        </span>
-      </div>
-
-      <!-- Resident Profile & Photo Section -->
-      <div class="flex items-center space-x-4 bg-slate-950/80 p-4 rounded-2xl border border-slate-800/80">
-        <div class="relative w-16 h-16 rounded-xl overflow-hidden border-2 border-emerald-500/50 bg-slate-900 flex-shrink-0">
-          <img id="resident-photo" src="https://placehold.co/150x150/0d1e15/emerald?text=Resident" alt="Resident Photo" class="w-full h-full object-cover">
-        </div>
-        <div class="space-y-1">
-          <h3 class="font-bold text-slate-100 text-sm">Verified Resident</h3>
-          <p class="text-xs text-emerald-400 font-semibold">Knightsbridge Senior Living</p>
-          <p class="text-[11px] text-slate-400">Pass ID: <span class="text-slate-200 font-mono">KB-88204</span></p>
-        </div>
-      </div>
-
-      <!-- Quick Details -->
-      <div class="bg-slate-950/80 p-4 rounded-2xl border border-slate-800/80 space-y-2 text-xs">
-        <div class="flex justify-between">
-          <span class="text-slate-500 uppercase font-semibold">Community</span>
-          <span class="font-bold text-slate-200">Knightsbridge Apartments</span>
-        </div>
-        <div class="flex justify-between">
-          <span class="text-slate-500 uppercase font-semibold">Status</span>
-          <span class="font-bold text-emerald-400">Verified Resident</span>
-        </div>
-        <div class="flex justify-between">
-          <span class="text-slate-500 uppercase font-semibold">Push Alerts</span>
-          <span class="font-bold text-amber-200">Active / Receiving</span>
-        </div>
-      </div>
+    <div class="text-center space-y-1">
+      <h1 class="text-2xl font-extrabold tracking-tight text-amber-100">Knightsbridge Apartments</h1>
+      <p class="text-emerald-400 text-xs font-bold tracking-widest uppercase">Resident Portal & Digital Pass</p>
     </div>
 
-    <!-- Photos & Media Gallery -->
-    <div class="bg-slate-900/80 border border-emerald-900/60 rounded-3xl p-6 shadow-xl backdrop-blur-md space-y-4">
-      <div class="flex items-center justify-between border-b border-slate-800 pb-3">
-        <h2 class="text-sm font-bold uppercase tracking-wider text-amber-200">Community Gallery & Photos</h2>
-        <span class="text-[10px] text-slate-400 uppercase font-bold">Property View</span>
-      </div>
-      <div class="grid grid-cols-2 gap-3" id="photo-gallery">
-        <div class="aspect-video bg-slate-950 rounded-xl overflow-hidden border border-slate-800">
-          <img src="https://placehold.co/400x250/0d1e15/emerald?text=Property+View" alt="Gallery Photo 1" class="w-full h-full object-cover">
-        </div>
-        <div class="aspect-video bg-slate-950 rounded-xl overflow-hidden border border-slate-800">
-          <img src="https://placehold.co/400x250/0d1e15/emerald?text=Amenities" alt="Gallery Photo 2" class="w-full h-full object-cover">
-        </div>
-      </div>
-    </div>
-
-    <!-- Notification Feed Log -->
-    <div class="bg-slate-900/80 border border-emerald-900/60 rounded-3xl p-6 shadow-xl backdrop-blur-md space-y-4">
-      <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+    <!-- Community Alerts Log Card with Clear/Delete Options -->
+    <div class="bg-[#123321]/90 border border-emerald-800/80 rounded-2xl p-6 space-y-4 shadow-xl">
+      <div class="flex items-center justify-between border-b border-emerald-800/60 pb-3">
         <div class="flex items-center space-x-2">
           <span class="inline-block w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
-          <h2 class="text-sm font-bold uppercase tracking-wider text-amber-200">Community Alerts Log</h2>
+          <h2 class="text-xs font-bold uppercase tracking-wider text-amber-200">Community Alerts Log</h2>
         </div>
-        <span id="alert-count" class="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-emerald-950 text-emerald-300 border border-emerald-800/50">0 Saved</span>
+        <button onclick="clearAllAlerts()" class="text-[10px] font-bold text-red-400 hover:text-red-300 bg-red-950/40 hover:bg-red-900/60 border border-red-800/40 px-2.5 py-0.5 rounded-full transition-all">
+          Clear All
+        </button>
       </div>
 
-      <!-- Dynamic Log Container -->
-      <div id="notifications-feed" class="space-y-3 max-h-60 overflow-y-auto pr-1 text-slate-300 text-xs">
-        <p id="no-alerts-msg" class="text-slate-500 italic text-center py-4">No recent community alerts posted.</p>
+      <!-- Feed Container -->
+      <div id="notifications-feed" class="space-y-3 max-h-60 overflow-y-auto pr-1 text-emerald-100/80 text-xs">
+        <p id="no-alerts-msg" class="text-emerald-300/40 italic text-center py-4">No recent community alerts posted.</p>
       </div>
     </div>
 
-  </main>
+    <!-- Navigation Link to Admin -->
+    <div class="text-center pt-2">
+      <a href="knightsbridge-admin.html" class="inline-flex items-center gap-1.5 text-xs text-emerald-200/80 hover:text-amber-200 transition-colors">
+        <span>Admin Portal</span> <span>→</span>
+      </a>
+    </div>
 
-  <footer class="text-center text-xs text-slate-500 py-4 space-y-1">
-    <p>&copy; 2026 QuickTap Solutions &bull; Knightsbridge Resident Portal</p>
-    <p><a href="knightsbridge-admin.html" class="text-slate-600 hover:text-emerald-400 transition-colors">Admin Portal</a></p>
-  </footer>
+    <!-- Footer -->
+    <p class="text-[10px] text-emerald-200/50 text-center tracking-widest uppercase pt-2">Powered by QuickTap Solutions</p>
+  </main>
 
   <script>
     function loadSavedAlerts() {
       const feed = document.getElementById('notifications-feed');
-      const countBadge = document.getElementById('alert-count');
       const saved = JSON.parse(localStorage.getItem('knightsbridge_alerts') || '[]');
 
-      if (countBadge) countBadge.innerText = `${saved.length} Saved`;
-
       if (saved.length === 0) {
-        if (feed) feed.innerHTML = '<p class="text-slate-500 italic text-center py-4">No recent community alerts posted.</p>';
+        if (feed) feed.innerHTML = '<p class="text-emerald-300/40 italic text-center py-4">No recent community alerts posted.</p>';
         return;
       }
 
       if (feed) {
-        feed.innerHTML = saved.map(alert => `
-          <div class="bg-slate-950/80 border border-slate-800/80 p-3.5 rounded-xl space-y-1">
-            <div class="flex justify-between items-center">
-              <h3 class="font-bold text-emerald-300 text-sm">${escapeHtml(alert.title)}</h3>
-              <span class="text-[10px] text-slate-500">${alert.date}</span>
+        feed.innerHTML = saved.map((alert, index) => `
+          <div class="bg-[#091e13] border border-emerald-800/60 p-3.5 rounded-xl space-y-1 relative group">
+            <div class="flex justify-between items-center pr-6">
+              <h3 class="font-bold text-amber-200 text-xs">${escapeHtml(alert.title)}</h3>
+              <span class="text-[10px] text-emerald-400/60">${alert.date}</span>
             </div>
-            <p class="text-slate-300 text-xs leading-relaxed">${escapeHtml(alert.body)}</p>
+            <p class="text-emerald-100/70 text-xs leading-relaxed">${escapeHtml(alert.body)}</p>
+            <button onclick="deleteSingleAlert(${index})" class="absolute top-3 right-3 text-emerald-500/50 hover:text-red-400 font-bold text-xs p-1" title="Delete Notification">✕</button>
           </div>
         `).join('');
       }
@@ -167,6 +113,20 @@
       const trimmed = saved.slice(0, 10);
       localStorage.setItem('knightsbridge_alerts', JSON.stringify(trimmed));
       loadSavedAlerts();
+    }
+
+    function deleteSingleAlert(index) {
+      const saved = JSON.parse(localStorage.getItem('knightsbridge_alerts') || '[]');
+      saved.splice(index, 1);
+      localStorage.setItem('knightsbridge_alerts', JSON.stringify(saved));
+      loadSavedAlerts();
+    }
+
+    function clearAllAlerts() {
+      if (confirm("Are you sure you want to clear all community alerts?")) {
+        localStorage.removeItem('knightsbridge_alerts');
+        loadSavedAlerts();
+      }
     }
 
     window.OneSignalDeferred = window.OneSignalDeferred || [];
