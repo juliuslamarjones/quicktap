@@ -1,3 +1,4 @@
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
@@ -21,11 +22,11 @@ export default async function handler(req, res) {
       method: "POST",
       headers: {
         "Content-Type": "application/json; charset=utf-8",
-        "Authorization": `Basic ${restApiKey}`
+        "Authorization": `Key ${restApiKey}`
       },
       body: JSON.stringify({
         app_id: appId,
-        included_segments: ["Subscribed Users"],
+        included_segments: ["Total Subscriptions"],
         headings: { en: title },
         contents: { en: body },
         url: "https://quicktapsolutions.com/knightsbridge.html"
