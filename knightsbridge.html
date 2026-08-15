@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -18,92 +18,74 @@
       });
     });
   </script>
+  <style>
+    body {
+      background-color: #061811;
+      color: #e2e8f0;
+    }
+  </style>
 </head>
-<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col justify-between font-sans antialiased">
+<body class="min-h-screen flex flex-col justify-between font-sans antialiased p-4">
 
-  <!-- Header Section -->
-  <header class="border-b border-slate-800 bg-slate-900/60 backdrop-blur-md sticky top-0 z-50">
-    <div class="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between">
-      <div class="flex items-center gap-3">
-        <div class="bg-emerald-500/10 p-2 rounded-xl border border-emerald-500/20">
-          <svg class="w-6 h-6 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5m0 0h4m-4 0V11m0 0h4m-4 0H7" />
-          </svg>
-        </div>
-        <div>
-          <h1 class="text-xl font-bold tracking-tight text-white">Knightsbridge Apartments</h1>
-          <p class="text-xs text-slate-400">Resident Notification Center</p>
-        </div>
+  <!-- Main Container -->
+  <div class="max-w-xl mx-auto w-full space-y-6">
+
+    <!-- Header / Brand Logo -->
+    <div class="text-center pt-4">
+      <div class="bg-white p-4 rounded-xl inline-block shadow-lg mb-4">
+        <img src="https://quicktapsolutions.com/images/wilhoit-logo.png" alt="Wilhoit Properties" class="h-16 mx-auto object-contain" onerror="this.src='https://via.placeholder.com/200x60?text=Wilhoit+Properties'">
       </div>
+      <h1 class="text-2xl font-bold text-white tracking-wide">Knightsbridge Apartments</h1>
+      <p class="text-xs text-emerald-400 font-semibold tracking-widest uppercase">Resident Portal</p>
     </div>
-  </header>
 
-  <!-- Main Content Area -->
-  <main class="max-w-4xl mx-auto px-4 py-8 flex-1 w-full space-y-8">
-    
-    <!-- Office & Directions Card -->
-    <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-6 text-white max-w-md mx-auto shadow-xl backdrop-blur-sm">
-      <div class="flex items-center gap-3 mb-4">
-        <div class="p-2.5 bg-emerald-500/10 rounded-xl text-emerald-400 border border-emerald-500/20">
-          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5m0 0h4m-4 0V11m0 0h4m-4 0H7" />
-          </svg>
-        </div>
+    <!-- Office Contact & Directions Card -->
+    <div class="bg-[#0b241a] border border-[#143d2c] rounded-2xl p-5 shadow-xl">
+      <div class="flex items-center gap-3 mb-3">
+        <span class="text-xl">🏢</span>
         <div>
-          <h3 class="text-lg font-bold text-white">Leasing & Office</h3>
-          <p class="text-xs text-slate-400">Knightsbridge Community</p>
+          <h3 class="font-bold text-white text-base">Leasing & Staff Office</h3>
+          <p class="text-xs text-emerald-400">Knightsbridge Community</p>
         </div>
       </div>
 
-      <div class="space-y-3 mb-6 text-sm">
-        <div class="flex items-start gap-3 text-slate-300">
-          <svg class="w-5 h-5 text-emerald-400 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-          </svg>
+      <div class="space-y-2 mb-4 text-sm text-slate-300">
+        <p class="flex items-center gap-2">
+          <span>📍</span>
           <span>3455 FM 1960 Rd W, Humble, TX 77338</span>
-        </div>
-
-        <div class="flex items-center gap-3 text-slate-300">
-          <svg class="w-5 h-5 text-emerald-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-          </svg>
-          <a href="tel:8326441284" class="hover:text-emerald-400 transition font-medium">(832) 644-1284</a>
-        </div>
+        </p>
+        <p class="flex items-center gap-2">
+          <span>📞</span>
+          <a href="tel:8326441284" class="text-emerald-400 hover:underline font-semibold">(832) 644-1284</a>
+        </p>
       </div>
 
       <a href="https://www.google.com/maps/dir/?api=1&destination=3455+FM+1960+Rd+W,+Humble,+TX+77338" 
          target="_blank" 
          rel="noopener noreferrer" 
-         class="flex items-center justify-center gap-2 w-full bg-emerald-600 hover:bg-emerald-500 text-white font-semibold py-3 px-4 rounded-xl transition duration-200 shadow-lg shadow-emerald-900/20">
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
-        </svg>
-        Get Directions via Google Maps
+         class="block text-center bg-[#10b981] hover:bg-[#059669] text-white font-bold py-2.5 px-4 rounded-xl transition duration-150 shadow-md">
+        🗺️ Get Directions via Google Maps
       </a>
     </div>
 
-    <!-- Active Community Alerts Section -->
-    <section class="max-w-2xl mx-auto">
-      <div class="flex items-center justify-between mb-4">
-        <h2 class="text-lg font-semibold text-white flex items-center gap-2">
-          <span class="relative flex h-3 w-3">
-            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-            <span class="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
-          </span>
-          Active Community Bulletins
-        </h2>
-      </div>
+    <!-- Active Bulletins Header -->
+    <div class="flex items-center gap-2 pt-2">
+      <span class="relative flex h-3 w-3">
+        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+        <span class="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
+      </span>
+      <h2 class="text-base font-bold text-white tracking-wide">ACTIVE COMMUNITY BULLETINS</h2>
+    </div>
 
-      <div id="alertsContainer" class="space-y-4">
-        <!-- Local storage or push alerts render here -->
-      </div>
-    </section>
+    <!-- Alerts Feed -->
+    <div id="alertsContainer" class="space-y-3">
+      <!-- Dynamic alerts load here -->
+    </div>
 
-  </main>
+  </div>
 
   <!-- Footer -->
-  <footer class="border-t border-slate-800/80 bg-slate-900/40 py-6 text-center text-xs text-slate-500">
+  <footer class="text-center py-6 text-xs text-slate-500">
     <p>&copy; Knightsbridge Apartments. All rights reserved.</p>
   </footer>
 
@@ -114,20 +96,20 @@
       
       if (alerts.length === 0) {
         container.innerHTML = `
-          <div class="bg-slate-900/50 border border-slate-800 rounded-2xl p-8 text-center">
-            <p class="text-slate-400 text-sm">No active community alerts at this time.</p>
+          <div class="bg-[#0b241a] border border-[#143d2c] rounded-2xl p-6 text-center text-slate-400 text-sm">
+            No active community alerts at this time.
           </div>
         `;
         return;
       }
 
       container.innerHTML = alerts.map(a => `
-        <div class="bg-slate-900 border border-slate-800/80 rounded-2xl p-5 shadow-lg">
-          <div class="flex items-start justify-between gap-4 mb-2">
-            <h3 class="font-semibold text-emerald-400 text-base">${a.title}</h3>
-            <span class="text-xs text-slate-500 shrink-0">${a.timestamp}</span>
+        <div class="bg-[#0b241a] border border-[#143d2c] rounded-2xl p-4 shadow-md">
+          <div class="flex items-start justify-between gap-2 mb-1">
+            <h3 class="font-bold text-emerald-400 text-sm">${a.title}</h3>
+            <span class="text-[10px] text-slate-400 shrink-0">${a.timestamp || a.date || ''}</span>
           </div>
-          <p class="text-slate-300 text-sm leading-relaxed">${a.body}</p>
+          <p class="text-slate-300 text-xs leading-relaxed">${a.body}</p>
         </div>
       `).join('');
     }
