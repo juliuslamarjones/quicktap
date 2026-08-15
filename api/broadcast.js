@@ -13,7 +13,7 @@ export default async function handler(req, res) {
   const ONESIGNAL_REST_API_KEY = process.env.ONESIGNAL_REST_API_KEY;
 
   if (!ONESIGNAL_REST_API_KEY) {
-    return res.status(500).json({ error: 'Missing ONESIGNAL_REST_API_KEY environment variable on Vercel' });
+    return res.status(500).json({ error: 'Missing ONESIGNAL_REST_API_KEY environment variable' });
   }
 
   try {
@@ -21,7 +21,7 @@ export default async function handler(req, res) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json; charset=utf-8',
-        'Authorization': `Basic ${ONESIGNAL_REST_API_KEY}`
+        'Authorization': `Key ${ONESIGNAL_REST_API_KEY}`
       },
       body: JSON.stringify({
         app_id: ONESIGNAL_APP_ID,
