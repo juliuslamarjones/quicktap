@@ -3,14 +3,18 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const { title, body } = req.body;
+  const { title, body } = req.body || {};
 
   if (!title || !body) {
     return res.status(400).json({ error: 'Title and body are required' });
   }
 
   const appId = "20ffec5d-47ec-47a2-904f-6ad334514f44";
-  const restApiKey = "YOUR_ONESIGNAL_REST_API_KEY"; // Insert your key here
+  const restApiKey = process.env.ONESIGNAL_REST_API_KEY;
+
+  if (!restApiKey) {
+    return res.status(500).json({ error: "OneSignal API key not configured on server." });
+  }
 
   try {
     const response = await fetch("https://onesignal.com/api/v1/notifications", {
@@ -30,10 +34,10 @@ export default async function handler(req, res) {
 
     const data = await response.json();
 
-    if (data.id) {
+    if (response.ok && data.id) {
       return res.status(200).json({ success: true, id: data.id });
     } else {
-      return res.status(400).json({ success: false, error: data });
+      return res.status(400).json({ success: false, details: data });
     }
   } catch (err) {
     return res.status(500).json({ success: false, error: err.message });
