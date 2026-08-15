@@ -146,12 +146,43 @@
         return;
       }
 
+      // 1. Save locally for community feed log
       saveNotification(title, body);
 
-      titleInput.value = '';
-      bodyInput.value = '';
+      // 2. Dispatch Live OneSignal REST API Push
+      const appId = "20ffec5d-47ec-47a2-904f-6ad334514f44";
+      const restApiKey = "YOUR_ONESIGNAL_REST_API_KEY"; // Replace with your REST API Key from OneSignal Dashboard
 
-      alert("Alert saved to community log and broadcasted!");
+      try {
+        const response = await fetch("https://onesignal.com/api/v1/notifications", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json; charset=utf-8",
+            "Authorization": `Basic ${restApiKey}`
+          },
+          body: JSON.stringify({
+            app_id: appId,
+            included_segments: ["Subscribed Users"],
+            headings: { en: title },
+            contents: { en: body },
+            url: "https://quicktapsolutions.com/knightsbridge.html"
+          })
+        });
+
+        const data = await response.json();
+
+        if (data.id) {
+          alert("Push alert successfully broadcasted to all subscribers!");
+          titleInput.value = '';
+          bodyInput.value = '';
+        } else {
+          console.error("OneSignal API Error:", data);
+          alert("Alert saved locally, but push failed. Make sure your REST API key is configured.");
+        }
+      } catch (err) {
+        console.error("Network Error:", err);
+        alert("Failed to reach OneSignal servers. Saved locally.");
+      }
     }
 
     document.addEventListener('DOMContentLoaded', loadAdminAlerts);
