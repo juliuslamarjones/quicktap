@@ -8,12 +8,17 @@ export default async function handler(req, res) {
   const ONESIGNAL_APP_ID = "20ffec5d-47ec-47a2-904f-6ad334514f44";
   const ONESIGNAL_REST_KEY = "os_v2_app_ed76yxkh5rd2fecpnljtiukpiskpkelwydcu7y52pft645v34zcxxlqanai723fdrh627dfjblgp3okgg6oh6onpaovlp2qfg3rvtsy";
 
+  // Format authorization token for OneSignal API v1
+  const authHeader = ONESIGNAL_REST_KEY.startsWith("os_v2_")
+    ? `Key ${ONESIGNAL_REST_KEY}`
+    : `Basic ${ONESIGNAL_REST_KEY}`;
+
   try {
     const response = await fetch("https://onesignal.com/api/v1/notifications", {
       method: "POST",
       headers: {
         "Content-Type": "application/json; charset=utf-8",
-        "Authorization": `Basic ${ONESIGNAL_REST_KEY}`
+        "Authorization": authHeader
       },
       body: JSON.stringify({
         app_id: ONESIGNAL_APP_ID,
