@@ -58,9 +58,9 @@
     function checkAdminSession() {
       const isAdmin = sessionStorage.getItem('kb_admin_logged') === 'true';
       const panel = document.getElementById('admin-broadcast-panel');
-      if (panel) {
-        panel.style.display = isAdmin ? 'block' : 'none';
-      }
+      const loginBtn = document.getElementById('admin-login-trigger');
+      if (panel) panel.style.display = isAdmin ? 'block' : 'none';
+      if (loginBtn) loginBtn.style.display = isAdmin ? 'none' : 'inline-block';
     }
 
     function promptAdminLogin() {
@@ -90,20 +90,7 @@
         return;
       }
 
-      // Add locally immediately
       addAlertToLog(title, body);
-
-      // Attempt OneSignal REST API push if configured or notify via console
-      try {
-        console.log("Broadcasting notification:", { title, body });
-        // Call OneSignal external push trigger if available
-        window.OneSignalDeferred.push(async function(OneSignal) {
-          // Note: Full REST API push requires REST API key server-side, 
-          // but we can trigger user notification via tags/events or simulated broadcast here.
-        });
-      } catch (e) {
-        console.error(e);
-      }
 
       titleInput.value = "";
       bodyInput.value = "";
@@ -171,11 +158,11 @@
     
     <!-- Branding Header -->
     <div class="flex flex-col items-center text-center space-y-3">
-      <div class="bg-white px-5 py-3 rounded-xl shadow-lg inline-block">
-        <img src="/wilhoit-logo.png" alt="Wilhoit Properties" class="h-12 w-auto object-contain mx-auto">
+      <div class="bg-white px-4 py-2.5 rounded-xl shadow-lg inline-flex items-center justify-center">
+        <img src="/wilhoit-logo.png" alt="Wilhoit Properties" class="h-10 w-auto object-contain">
       </div>
       <div>
-        <h2 class="text-2xl font-black text-amber-200 tracking-wide mt-2">Knightsbridge Apartments</h2>
+        <h2 class="text-2xl font-black text-amber-200 tracking-wide mt-1">Knightsbridge Apartments</h2>
         <p class="text-emerald-400 font-medium text-xs tracking-wider uppercase">WILHOIT PROPERTIES RESIDENT HUB</p>
         <p class="text-stone-400 text-xs mt-1">(3455 FM 1960 Rd W, Humble, TX 77338)</p>
       </div>
@@ -212,8 +199,8 @@
           Community Alerts Log
         </p>
         <div class="flex items-center gap-2">
-          <button onclick="promptAdminLogin()" class="text-[10px] text-amber-300 hover:text-amber-200 font-bold uppercase tracking-wider transition">
-            Admin Login
+          <button id="admin-login-trigger" onclick="promptAdminLogin()" class="text-[10px] text-amber-300 hover:text-amber-200 font-bold uppercase tracking-wider transition">
+            🔐 Admin Login
           </button>
           <span class="text-stone-600">|</span>
           <button onclick="clearAllAlerts()" class="text-[10px] text-stone-400 hover:text-stone-200 font-semibold uppercase tracking-wider transition">
