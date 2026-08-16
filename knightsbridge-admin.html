@@ -60,9 +60,6 @@
   </main>
 
   <script>
-    const ONESIGNAL_APP_ID = "20ffec5d-47ec-47a2-904f-6ad334514f44";
-    const ONESIGNAL_REST_API_KEY = "os_v2_app_ed76yxkh5rd2fecpnljtiukpiskpkelwydcu7y52pft645v34zcxxlqanai723fdrh627dfjblgp3okgg6oh6onpaovlp2qfg3rvtsy";
-
     async function handleBroadcast() {
       const titleInput = document.getElementById('alert-title');
       const bodyInput = document.getElementById('alert-body');
@@ -80,18 +77,12 @@
       broadcastBtn.innerText = "SENDING ALERT...";
 
       try {
-        const response = await fetch("https://onesignal.com/api/v1/notifications", {
+        const response = await fetch("/api/broadcast", {
           method: "POST",
           headers: {
-            "Content-Type": "application/json; charset=utf-8",
-            "Authorization": `Basic ${ONESIGNAL_REST_API_KEY}`
+            "Content-Type": "application/json"
           },
-          body: JSON.stringify({
-            app_id: ONESIGNAL_APP_ID,
-            included_segments: ["Subscribed Users"],
-            headings: { en: title },
-            contents: { en: body }
-          })
+          body: JSON.stringify({ title, body })
         });
 
         const data = await response.json();
@@ -102,8 +93,8 @@
           bodyInput.value = "";
           alert("Resident Alert successfully broadcasted!");
         } else {
-          console.error("OneSignal Error:", data);
-          alert("Failed to send notification: " + (data.errors ? JSON.stringify(data.errors) : "Unknown error"));
+          console.error("Broadcast Error:", data);
+          alert("Failed to send notification: " + (data.errors ? JSON.stringify(data.errors) : (data.error || "Unknown error")));
         }
       } catch (err) {
         console.error("Broadcast Exception:", err);
