@@ -1,86 +1,253 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Knightsbridge Staff Admin | Broadcast Portal</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Knightsbridge Staff Admin | Broadcast Center</title>
+  <style>
+    :root {
+      --bg-color: #0b1d13;
+      --card-bg: #11291b;
+      --primary-green: #00be70;
+      --primary-green-hover: #00995a;
+      --text-main: #ffffff;
+      --text-muted: #a3b8ac;
+      --border-color: #1e402b;
+      --input-bg: #07140c;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .admin-container {
+      width: 100%;
+      max-width: 600px;
+      margin-top: 20px;
+    }
+
+    .header-title {
+      text-align: center;
+      font-size: 1.2rem;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      color: var(--primary-green);
+      text-transform: uppercase;
+      margin-bottom: 25px;
+    }
+
+    .card {
+      background-color: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 25px;
+      margin-bottom: 25px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    }
+
+    .card-header {
+      font-size: 1rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      text-align: center;
+      color: #e5b84c;
+      margin-bottom: 20px;
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    label {
+      display: block;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: var(--primary-green);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    input[type="text"], textarea {
+      width: 100%;
+      background-color: var(--input-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      color: var(--text-main);
+      padding: 12px 15px;
+      font-size: 0.95rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    input[type="text"]:focus, textarea:focus {
+      border-color: var(--primary-green);
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    .btn-submit {
+      width: 100%;
+      background-color: var(--primary-green);
+      color: var(--bg-color);
+      border: none;
+      border-radius: 8px;
+      padding: 14px;
+      font-size: 0.95rem;
+      font-weight: 800;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background-color 0.2s, transform 0.1s;
+    }
+
+    .btn-submit:hover {
+      background-color: var(--primary-green-hover);
+    }
+
+    .btn-submit:active {
+      transform: scale(0.99);
+    }
+
+    .btn-submit:disabled {
+      background-color: #2c4c37;
+      color: #62826e;
+      cursor: not-allowed;
+    }
+
+    .sub-link {
+      display: block;
+      text-align: center;
+      margin-top: 15px;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      text-decoration: none;
+    }
+
+    .sub-link:hover {
+      color: var(--text-main);
+    }
+
+    .log-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+
+    .log-title {
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: var(--primary-green);
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .log-title::before {
+      content: "";
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      background-color: var(--primary-green);
+      border-radius: 50%;
+    }
+
+    .clear-log {
+      font-size: 0.75rem;
+      color: #e5b84c;
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
+
+    .log-empty {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      font-style: italic;
+      padding: 15px 0;
+    }
+  </style>
 </head>
-<body class="bg-[#091e13] text-white min-h-screen flex flex-col items-center justify-center p-4 antialiased font-sans">
+<body>
 
-  <main class="w-full max-w-md space-y-4 my-6">
-    <!-- Header -->
-    <div class="text-center space-y-1">
-      <h1 class="text-2xl font-extrabold tracking-tight text-amber-100">Staff Broadcast Portal</h1>
-      <p class="text-emerald-400 text-xs font-bold tracking-widest uppercase">Knightsbridge Apartments Admin</p>
+  <div class="admin-container">
+    <div class="header-title">Knightsbridge Apartments Admin</div>
+
+    <div class="card">
+      <div class="card-header">Send Resident Lock-Screen Alert</div>
+      <form id="broadcastForm">
+        <div class="form-group">
+          <label for="alertTitle">Alert Title</label>
+          <input type="text" id="alertTitle" placeholder="e.g., Water Maintenance Update" required>
+        </div>
+
+        <div class="form-group">
+          <label for="alertBody">Message Body</label>
+          <textarea id="alertBody" placeholder="e.g., Water service will be temporarily shut off from 1 PM to 3 PM for scheduled repairs." required></textarea>
+        </div>
+
+        <button type="submit" id="submitBtn" class="btn-submit">Broadcast Push Alert</button>
+      </form>
     </div>
 
-    <!-- Broadcast Form Card -->
-    <div class="bg-[#123321]/90 border border-emerald-800/80 rounded-2xl p-5 space-y-4 shadow-xl">
-      <h2 class="text-xs font-bold text-amber-200 uppercase tracking-widest text-center">SEND RESIDENT LOCK-SCREEN ALERT</h2>
-
-      <div class="space-y-3">
-        <div>
-          <label class="block text-[10px] font-bold text-emerald-200 uppercase tracking-wider mb-1">Alert Title</label>
-          <input id="alert-title" type="text" placeholder="e.g. Water Main Repair Notice" class="w-full bg-[#091e13] border border-emerald-700/60 rounded-xl px-3 py-2.5 text-xs text-white placeholder-emerald-500/50 focus:outline-none focus:border-amber-300 transition-colors" />
-        </div>
-
-        <div>
-          <label class="block text-[10px] font-bold text-emerald-200 uppercase tracking-wider mb-1">Message Body</label>
-          <textarea id="alert-body" rows="3" placeholder="e.g. Water service will be temporarily off from 1PM to 3PM for emergency main repairs." class="w-full bg-[#091e13] border border-emerald-700/60 rounded-xl px-3 py-2.5 text-xs text-white placeholder-emerald-500/50 focus:outline-none focus:border-amber-300 transition-colors resize-none"></textarea>
-        </div>
-
-        <button id="broadcast-btn" onclick="handleBroadcast()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold py-3.5 px-4 rounded-xl text-xs tracking-wider uppercase transition-all shadow-lg border border-emerald-400/30 active:scale-98 cursor-pointer flex items-center justify-center gap-2">
-          <span>📣</span> BROADCAST PUSH ALERT
-        </button>
+    <div class="card">
+      <div class="log-header">
+        <div class="log-title">Active Community Alerts</div>
+        <button type="button" class="clear-log" onclick="clearHistory()">Clear History</button>
+      </div>
+      <div id="alertHistoryLog" class="log-empty">
+        No active alerts posted yet.
       </div>
     </div>
 
-    <!-- Active Alerts History Log -->
-    <div class="bg-[#123321]/90 border border-emerald-800/80 rounded-2xl p-4 space-y-3 shadow-xl">
-      <div class="flex items-center justify-between border-b border-emerald-800/60 pb-2">
-        <div class="flex items-center space-x-2">
-          <span class="inline-block w-2 h-2 rounded-full bg-emerald-400"></span>
-          <span class="text-xs font-bold text-amber-200 uppercase tracking-widest">ACTIVE COMMUNITY ALERTS</span>
-        </div>
-        <button onclick="clearAlertHistory()" class="text-[10px] text-red-400 hover:text-red-300 transition-colors">Clear History</button>
-      </div>
-
-      <div id="admin-alerts-feed" class="space-y-2 max-h-52 overflow-y-auto pr-1 text-xs text-emerald-100/80">
-        <p id="no-admin-alerts-msg" class="text-emerald-300/40 italic text-center py-2">No active alerts posted yet.</p>
-      </div>
-    </div>
-
-    <!-- Return to Pass Link -->
-    <div class="text-center pt-2">
-      <a href="knightsbridge.html" class="text-[11px] text-emerald-300/60 hover:text-emerald-200 font-semibold transition-colors">
-        ← Return to Resident Pass
-      </a>
-    </div>
-  </main>
+    <a href="/knightsbridge.html" class="sub-link">&larr; Return to Resident Pass</a>
+  </div>
 
   <script>
-    async function handleBroadcast() {
-      const titleInput = document.getElementById('alert-title');
-      const bodyInput = document.getElementById('alert-body');
-      const broadcastBtn = document.getElementById('broadcast-btn');
+    const broadcastForm = document.getElementById('broadcastForm');
+    const submitBtn = document.getElementById('submitBtn');
+
+    broadcastForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const titleInput = document.getElementById('alertTitle');
+      const bodyInput = document.getElementById('alertBody');
 
       const title = titleInput.value.trim();
       const body = bodyInput.value.trim();
 
-      if (!title || !body) {
-        alert("Please enter both a title and a message body.");
-        return;
-      }
+      if (!title || !body) return;
 
-      broadcastBtn.disabled = true;
-      broadcastBtn.innerText = "SENDING ALERT...";
+      submitBtn.disabled = true;
+      submitBtn.innerText = 'SENDING ALERT...';
 
       try {
-        const response = await fetch("/api/broadcast", {
-          method: "POST",
+        // Route through local serverless API route instead of direct OneSignal calls
+        const response = await fetch('/api/broadcast', {
+          method: 'POST',
           headers: {
-            "Content-Type": "application/json"
+            'Content-Type': 'application/json'
           },
           body: JSON.stringify({ title, body })
         });
@@ -88,78 +255,25 @@
         const data = await response.json();
 
         if (response.ok && !data.errors) {
-          saveToLocalStorage(title, body);
-          titleInput.value = "";
-          bodyInput.value = "";
-          alert("Resident Alert successfully broadcasted!");
+          alert('Broadcast sent successfully!');
+          titleInput.value = '';
+          bodyInput.value = '';
         } else {
-          console.error("Broadcast Error:", data);
-          alert("Failed to send notification: " + (data.errors ? JSON.stringify(data.errors) : (data.error || "Unknown error")));
+          const errorMsg = data.errors ? JSON.stringify(data.errors) : JSON.stringify(data);
+          alert('Failed to send notification: ' + errorMsg);
         }
       } catch (err) {
-        console.error("Broadcast Exception:", err);
-        alert("Network error while triggering push broadcast.");
+        alert('Server connection error: ' + err.message);
       } finally {
-        broadcastBtn.disabled = false;
-        broadcastBtn.innerHTML = "<span>📣</span> BROADCAST PUSH ALERT";
+        submitBtn.disabled = false;
+        submitBtn.innerText = 'BROADCAST PUSH ALERT';
       }
+    });
+
+    function clearHistory() {
+      document.getElementById('alertHistoryLog').className = 'log-empty';
+      document.getElementById('alertHistoryLog').innerText = 'No active alerts posted yet.';
     }
-
-    function saveToLocalStorage(title, body) {
-      const saved = JSON.parse(localStorage.getItem('knightsbridge_alerts') || '[]');
-      const newAlert = {
-        title: title,
-        body: body,
-        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', month: 'short', day: 'numeric' })
-      };
-      saved.unshift(newAlert);
-      localStorage.setItem('knightsbridge_alerts', JSON.stringify(saved.slice(0, 10)));
-      renderAlertsHistory();
-    }
-
-    function renderAlertsHistory() {
-      const feed = document.getElementById('admin-alerts-feed');
-      const saved = JSON.parse(localStorage.getItem('knightsbridge_alerts') || '[]');
-
-      if (saved.length === 0) {
-        feed.innerHTML = '<p class="text-emerald-300/40 italic text-center py-2">No active alerts posted yet.</p>';
-        return;
-      }
-
-      feed.innerHTML = saved.map((alert, index) => `
-        <div class="bg-[#091e13] border border-emerald-800/60 p-3 rounded-xl space-y-1 relative">
-          <div class="flex justify-between items-center">
-            <h3 class="font-bold text-amber-200 text-xs">${escapeHtml(alert.title)}</h3>
-            <span class="text-[10px] text-emerald-400/60">${alert.timestamp || alert.date || ''}</span>
-          </div>
-          <p class="text-emerald-100/70 text-xs leading-relaxed">${escapeHtml(alert.body)}</p>
-          <button onclick="deleteAlert(${index})" class="text-[10px] text-emerald-400/40 hover:text-red-400 transition-colors pt-1">Remove Alert</button>
-        </div>
-      `).join('');
-    }
-
-    function deleteAlert(index) {
-      const saved = JSON.parse(localStorage.getItem('knightsbridge_alerts') || '[]');
-      saved.splice(index, 1);
-      localStorage.setItem('knightsbridge_alerts', JSON.stringify(saved));
-      renderAlertsHistory();
-    }
-
-    function clearAlertHistory() {
-      if (confirm("Are you sure you want to clear all logged community alerts?")) {
-        localStorage.removeItem('knightsbridge_alerts');
-        renderAlertsHistory();
-      }
-    }
-
-    function escapeHtml(text) {
-      if (!text) return '';
-      const div = document.createElement('div');
-      div.innerText = text;
-      return div.innerHTML;
-    }
-
-    document.addEventListener('DOMContentLoaded', renderAlertsHistory);
   </script>
 </body>
 </html>
