@@ -6,14 +6,18 @@ export default async function handler(req, res) {
   const { title, body } = req.body;
 
   const ONESIGNAL_APP_ID = "20ffec5d-47ec-47a2-904f-6ad334514f44";
-  const NEW_REST_KEY = "os_v2_app_ed76yxkh5rd2fecpnljtiukpisqpvmvs3apu6v4uut7plm633quhlwtkbqxffdyc2j4lqyacufy2p2s4umy3nmeirfc5rjq7iw4ofcq";
+  const ONESIGNAL_REST_KEY = process.env.ONESIGNAL_REST_KEY;
+
+  if (!ONESIGNAL_REST_KEY) {
+    return res.status(500).json({ error: "Missing ONESIGNAL_REST_KEY environment variable" });
+  }
 
   try {
     const response = await fetch("https://api.onesignal.com/notifications", {
       method: "POST",
       headers: {
         "Content-Type": "application/json; charset=utf-8",
-        "Authorization": `Key ${NEW_REST_KEY}`
+        "Authorization": `Key ${ONESIGNAL_REST_KEY.trim()}`
       },
       body: JSON.stringify({
         app_id: ONESIGNAL_APP_ID,
