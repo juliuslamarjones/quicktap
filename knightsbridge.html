@@ -22,6 +22,13 @@
       OneSignal.User.PushSubscription.addEventListener("change", function(event) {
         updateSubscriptionButton(event.current.optedIn);
       });
+
+      // Capture active push notifications received while on page
+      OneSignal.Notifications.addEventListener("foregroundWillDisplay", function(event) {
+        const title = event.notification.title || "Community Alert";
+        const body = event.notification.body || "";
+        addAlertToLog(title, body);
+      });
     });
 
     function updateSubscriptionButton(isSubscribed) {
@@ -47,6 +54,59 @@
         }
       });
     }
+
+    // --- Alert Logging Logic ---
+    function loadAlertLogs() {
+      const container = document.getElementById('alerts-log');
+      if (!container) return;
+      const stored = localStorage.getItem('knightsbridge_alerts');
+      const alerts = stored ? JSON.parse(stored) : [];
+
+      if (alerts.length === 0) {
+        container.innerHTML = '<p class="text-xs text-stone-400 italic text-center py-2">No recent community alerts posted.</p>';
+        return;
+      }
+
+      container.innerHTML = alerts.map((item, index) => `
+        <div class="flex items-start justify-between bg-emerald-900/30 p-2.5 rounded-lg border border-emerald-800/40 text-left mb-2">
+          <div class="pr-2">
+            <div class="text-xs font-bold text-amber-200">${item.title}</div>
+            <div class="text-[11px] text-stone-300 mt-0.5">${item.body}</div>
+            <div class="text-[9px] text-stone-400 mt-1">${item.timestamp}</div>
+          </div>
+          <button onclick="deleteSingleAlert(${index})" class="text-stone-400 hover:text-red-400 text-xs px-1 font-bold" title="Delete Alert">✕</button>
+        </div>
+      `).join('');
+    }
+
+    function addAlertToLog(title, body) {
+      const stored = localStorage.getItem('knightsbridge_alerts');
+      const alerts = stored ? JSON.parse(stored) : [];
+      const newAlert = {
+        title: title,
+        body: body,
+        timestamp: new Date().toLocaleString()
+      };
+      alerts.unshift(newAlert);
+      localStorage.setItem('knightsbridge_alerts', JSON.stringify(alerts));
+      loadAlertLogs();
+    }
+
+    function deleteSingleAlert(index) {
+      const stored = localStorage.getItem('knightsbridge_alerts');
+      if (!stored) return;
+      let alerts = JSON.parse(stored);
+      alerts.splice(index, 1);
+      localStorage.setItem('knightsbridge_alerts', JSON.stringify(alerts));
+      loadAlertLogs();
+    }
+
+    function clearAllAlerts() {
+      localStorage.removeItem('knightsbridge_alerts');
+      loadAlertLogs();
+    }
+
+    document.addEventListener("DOMContentLoaded", loadAlertLogs);
   </script>
 </head>
 <body class="bg-[#0b1a13] text-stone-100 min-h-screen flex flex-col items-center justify-center p-4 antialiased">
@@ -88,13 +148,18 @@
     </div>
 
     <!-- Live Community Alerts Log -->
-    <div class="bg-emerald-950/40 border border-emerald-900/60 rounded-xl p-4 space-y-2">
-      <p class="text-xs font-semibold text-emerald-300 uppercase tracking-wider flex items-center gap-2">
-        <span class="h-2 w-2 rounded-full bg-emerald-400 inline-block animate-pulse"></span>
-        Community Alerts Log
-      </p>
-      <div id="alerts-log" class="text-xs text-stone-400 italic text-center py-2">
-        No recent community alerts posted.
+    <div class="bg-emerald-950/40 border border-emerald-900/60 rounded-xl p-4 space-y-3">
+      <div class="flex items-center justify-between border-b border-emerald-900/60 pb-2">
+        <p class="text-xs font-semibold text-emerald-300 uppercase tracking-wider flex items-center gap-2">
+          <span class="h-2 w-2 rounded-full bg-emerald-400 inline-block animate-pulse"></span>
+          Community Alerts Log
+        </p>
+        <button onclick="clearAllAlerts()" class="text-[10px] text-stone-400 hover:text-amber-300 font-semibold uppercase tracking-wider transition">
+          Clear All
+        </button>
+      </div>
+      <div id="alerts-log">
+        <p class="text-xs text-stone-400 italic text-center py-2">No recent community alerts posted.</p>
       </div>
     </div>
 
