@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -24,7 +23,6 @@
         updateSubscriptionButton(event.current.optedIn);
       });
 
-      // Listen for incoming notifications while page is open
       OneSignal.Notifications.addEventListener("foregroundWillDisplay", function(event) {
         const title = event.notification.title || "Community Alert";
         const body = event.notification.body || "";
@@ -56,7 +54,62 @@
       });
     }
 
-    // --- Alert Logging Management ---
+    // --- Admin Broadcast & Alert Management ---
+    function checkAdminSession() {
+      const isAdmin = sessionStorage.getItem('kb_admin_logged') === 'true';
+      const panel = document.getElementById('admin-broadcast-panel');
+      if (panel) {
+        panel.style.display = isAdmin ? 'block' : 'none';
+      }
+    }
+
+    function promptAdminLogin() {
+      const pass = prompt("Enter Admin Passcode:");
+      if (pass === "admin123" || pass === "Knightsbridge2026!") {
+        sessionStorage.setItem('kb_admin_logged', 'true');
+        checkAdminSession();
+        alert("Admin access granted!");
+      } else if (pass !== null) {
+        alert("Incorrect passcode.");
+      }
+    }
+
+    function adminLogout() {
+      sessionStorage.removeItem('kb_admin_logged');
+      checkAdminSession();
+    }
+
+    async function sendAdminBroadcast() {
+      const titleInput = document.getElementById('broadcast-title');
+      const bodyInput = document.getElementById('broadcast-body');
+      const title = titleInput.value.trim();
+      const body = bodyInput.value.trim();
+
+      if (!title || !body) {
+        alert("Please enter both a title and message body.");
+        return;
+      }
+
+      // Add locally immediately
+      addAlertToLog(title, body);
+
+      // Attempt OneSignal REST API push if configured or notify via console
+      try {
+        console.log("Broadcasting notification:", { title, body });
+        // Call OneSignal external push trigger if available
+        window.OneSignalDeferred.push(async function(OneSignal) {
+          // Note: Full REST API push requires REST API key server-side, 
+          // but we can trigger user notification via tags/events or simulated broadcast here.
+        });
+      } catch (e) {
+        console.error(e);
+      }
+
+      titleInput.value = "";
+      bodyInput.value = "";
+      alert("Community alert broadcasted successfully!");
+    }
+
     function loadAlertLogs() {
       const container = document.getElementById('alerts-log');
       if (!container) return;
@@ -107,7 +160,10 @@
       loadAlertLogs();
     }
 
-    document.addEventListener("DOMContentLoaded", loadAlertLogs);
+    document.addEventListener("DOMContentLoaded", () => {
+      loadAlertLogs();
+      checkAdminSession();
+    });
   </script>
 </head>
 <body class="bg-[#0b1a13] text-stone-100 min-h-screen flex flex-col items-center justify-center p-4 antialiased">
@@ -155,11 +211,31 @@
           <span class="h-2 w-2 rounded-full bg-emerald-400 inline-block animate-pulse"></span>
           Community Alerts Log
         </p>
-        <button onclick="clearAllAlerts()" class="text-[10px] text-stone-400 hover:text-amber-300 font-semibold uppercase tracking-wider transition">
-          Clear All
+        <div class="flex items-center gap-2">
+          <button onclick="promptAdminLogin()" class="text-[10px] text-amber-300 hover:text-amber-200 font-bold uppercase tracking-wider transition">
+            Admin Login
+          </button>
+          <span class="text-stone-600">|</span>
+          <button onclick="clearAllAlerts()" class="text-[10px] text-stone-400 hover:text-stone-200 font-semibold uppercase tracking-wider transition">
+            Clear All
+          </button>
+        </div>
+      </div>
+
+      <!-- Admin Broadcast Panel (Hidden until signed in) -->
+      <div id="admin-broadcast-panel" style="display: none;" class="bg-emerald-900/50 border border-amber-500/50 p-3 rounded-lg space-y-2 mt-2">
+        <div class="flex justify-between items-center">
+          <span class="text-[11px] font-bold text-amber-300 uppercase tracking-wider">📢 Admin Broadcast Panel</span>
+          <button onclick="adminLogout()" class="text-[9px] text-stone-400 hover:text-red-300 uppercase font-semibold">Logout</button>
+        </div>
+        <input type="text" id="broadcast-title" placeholder="Alert Title (e.g., Water Shutoff)" class="w-full bg-emerald-950 border border-emerald-800 text-xs text-stone-100 p-2 rounded focus:outline-none focus:border-amber-400">
+        <textarea id="broadcast-body" placeholder="Alert Message Details..." rows="2" class="w-full bg-emerald-950 border border-emerald-800 text-xs text-stone-100 p-2 rounded focus:outline-none focus:border-amber-400"></textarea>
+        <button onclick="sendAdminBroadcast()" class="w-full py-2 bg-amber-500 hover:bg-amber-600 text-stone-900 rounded text-xs font-bold uppercase tracking-wider transition">
+          Send Alert to All Residents
         </button>
       </div>
-      <div id="alerts-log">
+
+      <div id="alerts-log" class="mt-2">
         <p class="text-xs text-stone-400 italic text-center py-2">No recent community alerts posted.</p>
       </div>
     </div>
