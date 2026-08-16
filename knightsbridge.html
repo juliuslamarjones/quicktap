@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -270,6 +269,11 @@
       window.OneSignalDeferred = window.OneSignalDeferred || [];
       window.OneSignalDeferred.push(async function(OneSignal) {
         try {
+          if (Notification.permission === 'denied') {
+            alert("Notifications are currently blocked in your browser settings. Click the settings icon next to the site URL to reset notification permissions.");
+            return;
+          }
+
           await OneSignal.Notifications.requestPermission();
           await OneSignal.User.PushSubscription.optIn();
 
@@ -278,7 +282,11 @@
           }
         } catch (err) {
           console.log("OneSignal push error:", err);
-          alert("Unable to request notification permission.");
+          if (Notification.permission === 'granted') {
+            setSubscribedButtonState();
+          } else {
+            alert("Notification permission was blocked or dismissed. Please reset permissions in your browser bar.");
+          }
         }
       });
     }
