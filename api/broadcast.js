@@ -12,17 +12,13 @@ export default async function handler(req, res) {
     return res.status(500).json({ error: "ONESIGNAL_REST_KEY environment variable is missing in Vercel." });
   }
 
-  // Format header specifically for os_v2 keys
-  const authHeader = ONESIGNAL_REST_KEY.startsWith("os_v2_")
-    ? `Key ${ONESIGNAL_REST_KEY}`
-    : `Basic ${ONESIGNAL_REST_KEY}`;
-
   try {
+    // Send request using Basic scheme for OneSignal API authentication
     const response = await fetch("https://api.onesignal.com/notifications", {
       method: "POST",
       headers: {
         "Content-Type": "application/json; charset=utf-8",
-        "Authorization": authHeader
+        "Authorization": `Basic ${ONESIGNAL_REST_KEY}`
       },
       body: JSON.stringify({
         app_id: ONESIGNAL_APP_ID,
@@ -38,7 +34,6 @@ export default async function handler(req, res) {
       return res.status(response.status).json({
         error: "OneSignal API Error",
         status: response.status,
-        authHeaderUsed: authHeader.substring(0, 15) + "...",
         oneSignalResponse: data
       });
     }
