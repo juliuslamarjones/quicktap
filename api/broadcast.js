@@ -1,3 +1,4 @@
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
@@ -9,11 +10,12 @@ export default async function handler(req, res) {
   const ONESIGNAL_REST_KEY = process.env.ONESIGNAL_REST_KEY;
 
   try {
-    const response = await fetch("https://onesignal.com/api/v1/notifications", {
+    // Attempt 1: Key header on api.onesignal.com (Standard v2 format)
+    let response = await fetch("https://api.onesignal.com/notifications", {
       method: "POST",
       headers: {
         "Content-Type": "application/json; charset=utf-8",
-        "Authorization": `Basic ${ONESIGNAL_REST_KEY}`
+        "Authorization": `Key ${ONESIGNAL_REST_KEY}`
       },
       body: JSON.stringify({
         app_id: ONESIGNAL_APP_ID,
@@ -23,15 +25,15 @@ export default async function handler(req, res) {
       })
     });
 
-    const data = await response.json();
+    let data = await response.json();
 
-    // Fallback attempt with Key header if Basic fails
-    if (!response.ok && data.errors && data.errors.some(e => e.includes('Authorization') || e.includes('Access denied'))) {
-      const retryResponse = await fetch("https://onesignal.com/api/v1/notifications", {
+    // Attempt 2: Bearer header fallback on api.onesignal.com
+    if (!response.ok && data.errors) {
+      response = await fetch("https://api.onesignal.com/notifications", {
         method: "POST",
         headers: {
           "Content-Type": "application/json; charset=utf-8",
-          "Authorization": `Key ${ONESIGNAL_REST_KEY}`
+          "Authorization": `Bearer ${ONESIGNAL_REST_KEY}`
         },
         body: JSON.stringify({
           app_id: ONESIGNAL_APP_ID,
@@ -40,8 +42,7 @@ export default async function handler(req, res) {
           contents: { en: body }
         })
       });
-      const retryData = await retryResponse.json();
-      return res.status(retryResponse.status).json(retryData);
+      data = await response.json();
     }
 
     return res.status(response.status).json(data);
