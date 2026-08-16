@@ -69,7 +69,7 @@
 
     function promptAdminLogin() {
       const pass = prompt("Enter Admin Passcode:");
-      if (pass === "admin123" || pass === "Knightsbridge2026!") {
+      if (pass === "1234") {
         sessionStorage.setItem('kb_admin_logged', 'true');
         checkAdminSession();
         alert("Admin access granted!");
