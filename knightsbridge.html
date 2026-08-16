@@ -21,8 +21,7 @@
           allowLocalhostAsSecureOrigin: true,
         });
 
-        const isPushEnabled = await OneSignal.User.PushSubscription.optedIn;
-        updateSubscriptionButton(isPushEnabled);
+        checkSubscriptionState();
 
         OneSignal.User.PushSubscription.addEventListener("change", function(event) {
           updateSubscriptionButton(event.current.optedIn);
@@ -38,37 +37,44 @@
       }
     });
 
+    async function checkSubscriptionState() {
+      if (!window.OneSignal || !window.OneSignal.User) return;
+      const isOptedIn = OneSignal.User.PushSubscription.optedIn;
+      updateSubscriptionButton(isOptedIn);
+    }
+
     function updateSubscriptionButton(isSubscribed) {
       const btn = document.getElementById('subscribe-btn');
       if (!btn) return;
       if (isSubscribed) {
         btn.innerText = "✓ ALERTS ACTIVATED & SUBSCRIBED";
         btn.className = "w-full py-3 bg-emerald-800 text-emerald-100 rounded-lg text-xs font-semibold uppercase tracking-wider cursor-default";
+        btn.onclick = null;
       } else {
         btn.innerText = "ENABLE RESIDENT LOCK-SCREEN ALERTS";
         btn.className = "w-full py-3 bg-amber-500 hover:bg-amber-600 text-stone-900 rounded-lg text-xs font-bold uppercase tracking-wider cursor-pointer transition";
+        btn.onclick = subscribeUser;
       }
     }
 
-    async function toggleSubscription() {
+    async function subscribeUser() {
       try {
         if (!window.OneSignal || !window.OneSignal.User) {
           alert("Notification service is still loading. Please wait a second and try again.");
           return;
         }
         
-        const isOptedIn = OneSignal.User.PushSubscription.optedIn;
-        if (isOptedIn) {
-          await OneSignal.User.PushSubscription.optOut();
-          alert("You have unsubscribed from alerts.");
-        } else {
-          await OneSignal.Notifications.requestPermission();
+        const permission = await OneSignal.Notifications.requestPermission();
+        if (permission) {
           await OneSignal.User.PushSubscription.optIn();
-          alert("Subscription request sent! Check your browser prompt.");
+          alert("Success! You are now subscribed to community alerts.");
+          updateSubscriptionButton(true);
+        } else {
+          alert("Notification permission was dismissed or blocked in browser settings.");
         }
       } catch (err) {
-        console.error("Subscription Toggle Error:", err);
-        alert("Error toggling alerts. Make sure notifications are allowed in your browser settings.");
+        console.error("Subscription Error:", err);
+        alert("Error enabling alerts. Check browser settings.");
       }
     }
 
@@ -204,7 +210,7 @@
 
     <!-- Push Notification Toggle Button -->
     <div>
-      <button id="subscribe-btn" onclick="toggleSubscription()" class="w-full py-3 bg-amber-500 hover:bg-amber-600 text-stone-900 rounded-lg text-xs font-bold uppercase tracking-wider transition">
+      <button id="subscribe-btn" onclick="subscribeUser()" class="w-full py-3 bg-amber-500 hover:bg-amber-600 text-stone-900 rounded-lg text-xs font-bold uppercase tracking-wider transition">
         ENABLE RESIDENT LOCK-SCREEN ALERTS
       </button>
     </div>
