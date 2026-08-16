@@ -7,7 +7,6 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
   <script>
-    // Force clean URL hash immediately
     if (window.location.hash) {
       history.replaceState(null, null, window.location.pathname);
     }
@@ -163,9 +162,9 @@
     
     <!-- Branding Header -->
     <div class="flex flex-col items-center text-center space-y-3">
-      <!-- Tighter inline-block wrapper matching exact image size -->
-      <div class="bg-white px-3 py-1.5 rounded-xl shadow-lg inline-flex items-center justify-center w-max">
-        <img src="/wilhoit-logo.png" alt="Wilhoit Properties" class="h-8 w-auto object-contain block">
+      <!-- Removed fixed white background card box, rendering logo cleanly -->
+      <div class="py-1">
+        <img src="/wilhoit-logo.png" alt="Wilhoit Properties" class="h-12 w-auto object-contain mx-auto">
       </div>
       <div>
         <h2 class="text-2xl font-black text-amber-200 tracking-wide mt-1">Knightsbridge Apartments</h2>
