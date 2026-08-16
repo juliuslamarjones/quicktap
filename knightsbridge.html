@@ -13,25 +13,29 @@
 
     window.OneSignalDeferred = window.OneSignalDeferred || [];
     OneSignalDeferred.push(async function(OneSignal) {
-      await OneSignal.init({
-        appId: "20ffec5d-47ec-47a2-904f-6ad334514f44",
-        safari_web_id: "web.onesignal.auto.20ffec5d-47ec-47a2-904f-6ad334514f44",
-        notifyButton: { enable: false },
-        allowLocalhostAsSecureOrigin: true,
-      });
+      try {
+        await OneSignal.init({
+          appId: "20ffec5d-47ec-47a2-904f-6ad334514f44",
+          safari_web_id: "web.onesignal.auto.20ffec5d-47ec-47a2-904f-6ad334514f44",
+          notifyButton: { enable: false },
+          allowLocalhostAsSecureOrigin: true,
+        });
 
-      const isPushEnabled = await OneSignal.User.PushSubscription.optedIn;
-      updateSubscriptionButton(isPushEnabled);
+        const isPushEnabled = await OneSignal.User.PushSubscription.optedIn;
+        updateSubscriptionButton(isPushEnabled);
 
-      OneSignal.User.PushSubscription.addEventListener("change", function(event) {
-        updateSubscriptionButton(event.current.optedIn);
-      });
+        OneSignal.User.PushSubscription.addEventListener("change", function(event) {
+          updateSubscriptionButton(event.current.optedIn);
+        });
 
-      OneSignal.Notifications.addEventListener("foregroundWillDisplay", function(event) {
-        const title = event.notification.title || "Community Alert";
-        const body = event.notification.body || "";
-        addAlertToLog(title, body);
-      });
+        OneSignal.Notifications.addEventListener("foregroundWillDisplay", function(event) {
+          const title = event.notification.title || "Community Alert";
+          const body = event.notification.body || "";
+          addAlertToLog(title, body);
+        });
+      } catch (err) {
+        console.error("OneSignal Init Error:", err);
+      }
     });
 
     function updateSubscriptionButton(isSubscribed) {
@@ -47,15 +51,25 @@
     }
 
     async function toggleSubscription() {
-      window.OneSignalDeferred.push(async function(OneSignal) {
+      try {
+        if (!window.OneSignal || !window.OneSignal.User) {
+          alert("Notification service is still loading. Please wait a second and try again.");
+          return;
+        }
+        
         const isOptedIn = OneSignal.User.PushSubscription.optedIn;
         if (isOptedIn) {
           await OneSignal.User.PushSubscription.optOut();
+          alert("You have unsubscribed from alerts.");
         } else {
           await OneSignal.Notifications.requestPermission();
           await OneSignal.User.PushSubscription.optIn();
+          alert("Subscription request sent! Check your browser prompt.");
         }
-      });
+      } catch (err) {
+        console.error("Subscription Toggle Error:", err);
+        alert("Error toggling alerts. Make sure notifications are allowed in your browser settings.");
+      }
     }
 
     // --- Admin Broadcast & Alert Management ---
