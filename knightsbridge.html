@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -50,7 +51,7 @@
       <p>Tap <b>⋮</b> or <b>···</b> in top right and select <b>"Open in Chrome"</b> or <b>"Open in Safari"</b> for full live demo support.</p>
     </div>
 
-    <!-- Clean Logo Header (UPDATED: Expanded Logo Width) -->
+    <!-- Clean Logo Header -->
     <div class="flex justify-center items-center py-2">
       <img id="company-logo" src="wilhoit_logo.png" alt="Wilhoit Properties Logo" class="w-full max-w-[340px] h-auto object-contain drop-shadow-[0_0_15px_rgba(255,255,255,0.25)]" />
     </div>
@@ -269,8 +270,10 @@
       window.OneSignalDeferred = window.OneSignalDeferred || [];
       window.OneSignalDeferred.push(async function(OneSignal) {
         try {
-          const permission = await OneSignal.Notifications.requestPermission();
-          if (permission) {
+          await OneSignal.Notifications.requestPermission();
+          await OneSignal.User.PushSubscription.optIn();
+
+          if (OneSignal.User.PushSubscription.optedIn) {
             setSubscribedButtonState();
           }
         } catch (err) {
