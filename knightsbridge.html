@@ -114,11 +114,27 @@
         return;
       }
 
-      addAlertToLog(title, body);
+      try {
+        const res = await fetch('/api/broadcast', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ title, body })
+        });
 
-      titleInput.value = "";
-      bodyInput.value = "";
-      alert("Community alert broadcasted successfully!");
+        const result = await res.json();
+        if (!res.ok) {
+          alert("Broadcast Error: " + (result.error || 'Unknown error'));
+          return;
+        }
+
+        addAlertToLog(title, body);
+        titleInput.value = "";
+        bodyInput.value = "";
+        alert("Success! Push notification broadcasted securely to all resident devices.");
+      } catch (err) {
+        console.error("Network error:", err);
+        alert("Failed to connect to broadcast server.");
+      }
     }
 
     function loadAlertLogs() {
