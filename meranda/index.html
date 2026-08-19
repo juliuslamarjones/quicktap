@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meranda's In-Home Grooming | Mobile Hub</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- OneSignal Push Notifications SDK -->
+    <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+    <script>
+      window.OneSignalDeferred = window.OneSignalDeferred || [];
+      OneSignalDeferred.push(async function(OneSignal) {
+        await OneSignal.init({
+          appId: "20ffec5d-47ec-47a2-904f-6ad334514f44", // Update if using a separate OneSignal App ID for Meranda
+          safari_web_id: "web.onesignal.auto.212e621b-efc2-4b2a-9d36-9f4cd158ecec",
+          serviceWorkerPath: "OneSignalSDKWorker.js",
+          serviceWorkerParam: { scope: "/" },
+        });
+      });
+    </script>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+        }
+        body {
+            background-color: #f7f4ee;
+            color: #3e3226;
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+        }
+        .container {
+            width: 100%;
+            max-width: 480px;
+            background: #ffffff;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            overflow: hidden;
+            border: 2px solid #e2d9cd;
+        }
+        .header {
+            background: linear-gradient(135deg, #4a3b32 0%, #2c221b 100%);
+            color: #fff;
+            padding: 30px 20px;
+            text-align: center;
+        }
+        .header h1 {
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            margin-bottom: 5px;
+        }
+        .header p {
+            font-size: 13px;
+            color: #dcd6ce;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .badge {
+            display: inline-block;
+            background: #a35d48;
+            color: white;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-top: 15px;
+        }
+        .content {
+            padding: 25px 20px;
+        }
+        .tagline {
+            text-align: center;
+            font-size: 15px;
+            font-weight: 600;
+            color: #6a5344;
+            margin-bottom: 20px;
+        }
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 14px;
+            border-radius: 12px;
+            text-align: center;
+            font-weight: 600;
+            text-decoration: none;
+            font-size: 15px;
+            margin-bottom: 12px;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            border: none;
+        }
+        .btn-primary {
+            background-color: #a35d48;
+            color: white;
+            box-shadow: 0 4px 12px rgba(163, 93, 72, 0.3);
+        }
+        .btn-primary:hover {
+            background-color: #8c4e3b;
+        }
+        .btn-secondary {
+            background-color: #f2ede4;
+            color: #4a3b32;
+            border: 1px solid #d5ccc0;
+        }
+        .btn-secondary:hover {
+            background-color: #e6ded3;
+        }
+        .btn-alert {
+            background-color: #2c221b;
+            color: #fff;
+        }
+        .btn-alert:hover {
+            background-color: #1a1410;
+        }
+        .section-title {
+            font-size: 16px;
+            font-weight: 700;
+            margin: 25px 0 12px 0;
+            color: #4a3b32;
+            border-bottom: 2px solid #f2ede4;
+            padding-bottom: 5px;
+        }
+        .services-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+        .service-card {
+            background: #faf8f5;
+            border: 1px solid #e8e1d7;
+            padding: 12px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 500;
+            color: #5c493c;
+            text-align: center;
+        }
+        /* Photo Gallery Styles */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 8px;
+            margin-top: 10px;
+        }
+        .gallery-item {
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            height: 90px;
+            background: #e8e1d7;
+            border: 1px solid #d5ccc0;
+        }
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        .gallery-item img:hover {
+            transform: scale(1.05);
+        }
+        .footer {
+            text-align: center;
+            padding: 20px;
+            font-size: 11px;
+            color: #8c7b6d;
+            background: #fdfbf7;
+            border-top: 1px solid #f2ede4;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Header Info -->
+        <div class="header">
+            <h1>Meranda's In-Home Grooming</h1>
+            <p>Hockley, TX • Stress-Less Grooming</p>
+            <div class="badge">9 Years Experience</div>
+        </div>
+
+        <div class="content">
+            <div class="tagline">Because they deserve to look and feel their best!</div>
+
+            <!-- Action Buttons -->
+            <a href="tel:8322362713" class="btn btn-primary">📞 Call or Text to Book</a>
+            <button onclick="downloadVCard()" class="btn btn-secondary">📇 Save Business Contact</button>
+            <button onclick="subscribeNotifications()" class="btn btn-alert">🔔 Enable Grooming Updates & Alerts</button>
+
+            <!-- Services Offered -->
+            <div class="section-title">Our Services</div>
+            <div class="services-grid">
+                <div class="service-card">🛁 Bath & Brush</div>
+                <div class="service-card">✂️ Full Groom</div>
+                <div class="service-card">💅 Nail Trimming</div>
+                <div class="service-card">👂 Ear Cleaning</div>
+                <div class="service-card">🦁 De-shedding</div>
+                <div class="service-card">✨ Sanitary Trim</div>
+            </div>
+
+            <!-- Photo Gallery Section -->
+            <div class="section-title">Recent Grooms Gallery</div>
+            <div class="gallery-grid">
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1516734212186-a967f81ad0d7?auto=format&fit=crop&w=300&q=80" alt="Groomed dog 1">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?auto=format&fit=crop&w=300&q=80" alt="Groomed dog 2">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&w=300&q=80" alt="Groomed dog 3">
+                </div>
+            </div>
+
+            <!-- Highlights -->
+            <div class="section-title">Why Choose Us</div>
+            <div style="font-size: 13px; color: #614f41; line-height: 1.6;">
+                ✅ Calm, comfortable home setting<br>
+                ✅ Puppies, seniors & special needs welcome<br>
+                ✅ All breeds treated with loving care
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            Powered by Custom Mobile Hubs • Hockley, Texas
+        </div>
+    </div>
+
+    <script>
+        // Fully Functional vCard Download Generator
+        function downloadVCard() {
+            const vcardData = 
+`BEGIN:VCARD
+VERSION:3.0
+FN:Meranda's In-Home Grooming
+TEL:8322362713
+ADR:;;Hockley;TX;;;USA
+NOTE:Stress-Less In-Home Pet Grooming with 9 Years Experience.
+END:VCARD`;
+
+            const blob = new Blob([vcardData], { type: 'text/vcard;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', 'MerandasGrooming.vcf');
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        // Fully Functional Push Notification Subscriptions via OneSignal
+        async function subscribeNotifications() {
+            if (window.OneSignal) {
+                try {
+                    await OneSignal.Notifications.requestPermission();
+                    await OneSignal.User.PushSubscription.optIn();
+                    alert("Success! You are now subscribed to updates from Meranda's Grooming.");
+                } catch (err) {
+                    console.error("Subscription error:", err);
+                    alert("Could not enable notifications. Please check your browser site settings.");
+                }
+            } else {
+                alert("Notification service is loading. Please try again in a moment.");
+            }
+        }
+    </script>
+</body>
+</html>
