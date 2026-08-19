@@ -1,0 +1,11 @@
+{
+  "remoteName": "origin",
+  "projects": [
+    {
+      "id": "prj_QKg5yJtH2SjSlysFJXrVNKhclXbm",
+      "name": "quicktap",
+      "directory": ".",
+      "orgId": "team_HNoK5sTDBnF96qRIL9zvPvMG"
+    }
+  ]
+}
