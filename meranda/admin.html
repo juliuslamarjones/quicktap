@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Meranda's Grooming | Admin Portal</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- OneSignal Push Notifications SDK for Admin Panel -->
+  <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+  <script>
+    window.OneSignalDeferred = window.OneSignalDeferred || [];
+    OneSignalDeferred.push(async function(OneSignal) {
+      await OneSignal.init({
+        appId: "20ffec5d-47ec-47a2-904f-6ad334514f44",
+        safari_web_id: "web.onesignal.auto.212e621b-efc2-4b2a-9d36-9f4cd158ecec",
+        serviceWorkerPath: "OneSignalSDKWorker.js",
+        serviceWorkerParam: { scope: "/" },
+      });
+
+      OneSignal.User.PushSubscription.addEventListener("change", (event) => {
+        checkAdminSubscriptionStatus();
+      });
+
+      checkAdminSubscriptionStatus();
+    });
+
+    async function checkAdminSubscriptionStatus() {
+      if (window.OneSignal && window.OneSignal.User && window.OneSignal.User.PushSubscription) {
+        const isOptedIn = OneSignal.User.PushSubscription.optedIn;
+        const subId = OneSignal.User.PushSubscription.id;
+        
+        updateAdminPanelUI(isOptedIn === true && subId);
+      }
+    }
+
+    function updateAdminPanelUI(isOptedIn) {
+      const statusEl = document.getElementById('admin-sub-status');
+      const actionBtn = document.getElementById('admin-sub-action-btn');
+      
+      if (!statusEl || !actionBtn) return;
+
+      if (isOptedIn) {
+        statusEl.textContent = "Subscribed (Receiving Alerts)";
+        statusEl.className = "text-xs font-bold text-emerald-600";
+        
+        actionBtn.textContent = "Unsubscribe";
+        actionBtn.className = "bg-amber-600 hover:bg-amber-700 text-white font-bold py-2 px-2 rounded-lg text-[11px] uppercase tracking-wider transition-all shadow-sm";
+        actionBtn.setAttribute("onclick", "adminUnsubscribe()");
+      } else {
+        statusEl.textContent = "Unsubscribed (Not Receiving Alerts)";
+        statusEl.className = "text-xs font-bold text-slate-500";
+        
+        actionBtn.textContent = "Enable Alerts";
+        actionBtn.className = "bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 px-2 rounded-lg text-[11px] uppercase tracking-wider transition-all shadow-sm";
+        actionBtn.setAttribute("onclick", "adminSubscribe()");
+      }
+    }
+
+    async function adminSubscribe() {
+      if (window.OneSignal) {
+        await OneSignal.Notifications.requestPermission();
+        await OneSignal.User.PushSubscription.optIn();
+        checkAdminSubscriptionStatus();
+      }
+    }
+
+    async function adminUnsubscribe() {
+      if (window.OneSignal) {
+        try {
+          await OneSignal.User.PushSubscription.optOut();
+          checkAdminSubscriptionStatus();
+          alert("Device successfully unsubscribed.");
+        } catch (err) {
+          console.error("Unsubscribe error:", err);
+        }
+      }
+    }
+
+    async function adminResetSubscription() {
+      if (window.OneSignal) {
+        try {
+          await OneSignal.User.PushSubscription.optOut();
+          checkAdminSubscriptionStatus();
+          alert("Subscription state reset successfully.");
+        } catch (err) {
+          console.error("Reset error:", err);
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-[#f7f4ee] text-[#3e3226] min-h-screen flex items-center justify-center p-4 antialiased font-sans">
+
+  <main class="w-full max-w-lg bg-white border border-[#a35d48] rounded-2xl p-6 shadow-xl space-y-6">
+    
+    <!-- Login Screen View -->
+    <div id="login-section" class="space-y-4">
+      <div class="border-b border-slate-100 pb-4 text-center">
+        <h1 class="text-xl font-extrabold text-[#2c221b]">Admin Authentication</h1>
+        <p class="text-xs text-slate-500 pt-1">Enter password to access broadcast panel.</p>
+      </div>
+
+      <form id="login-form" class="space-y-4">
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1">Password</label>
+          <input type="password" id="admin-pass-input" required placeholder="Enter password..." class="w-full p-3 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#a35d48]" />
+        </div>
+        <button type="submit" class="w-full bg-[#a35d48] hover:bg-[#8c4e3b] text-white font-extrabold py-3.5 px-4 rounded-xl text-xs tracking-wider uppercase transition-all shadow-md cursor-pointer">
+          Login to Admin Portal
+        </button>
+      </form>
+      <div id="login-error" class="text-center text-xs font-bold text-red-500 hidden">
+        Incorrect password. Please try again.
+      </div>
+      <div class="pt-2 text-center">
+        <a href="index.html" class="text-xs font-semibold text-slate-400 hover:text-slate-600">← Back to Hub</a>
+      </div>
+    </div>
+
+    <!-- Broadcast Notice Panel View (Hidden by default) -->
+    <div id="broadcast-section" class="space-y-6 hidden">
+      <div class="border-b border-slate-100 pb-4 flex justify-between items-center">
+        <div>
+          <h1 class="text-xl font-extrabold text-[#2c221b]">Grooming Notice Board</h1>
+          <p class="text-xs text-slate-500 pt-1">Broadcast updates and opening alerts to clients.</p>
+        </div>
+        <button onclick="logoutAdmin()" class="text-xs font-bold text-red-600 hover:underline">Logout</button>
+      </div>
+
+      <!-- Admin Subscription & Reset Control Box -->
+      <div class="bg-[#faf8f5] border border-[#e8e1d7] rounded-xl p-4 space-y-3">
+        <div class="flex justify-between items-center">
+          <div>
+            <p class="text-xs font-extrabold text-[#2c221b] uppercase tracking-wider">Admin Device Alert Status</p>
+            <p id="admin-sub-status" class="text-xs font-bold text-slate-500 pt-0.5">Checking...</p>
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-2 pt-1">
+          <button id="admin-sub-action-btn" onclick="adminSubscribe()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 px-2 rounded-lg text-[11px] uppercase tracking-wider transition-all shadow-sm">
+            Enable Alerts
+          </button>
+          <button onclick="adminResetSubscription()" class="bg-slate-600 hover:bg-slate-700 text-white font-bold py-2 px-2 rounded-lg text-[11px] uppercase tracking-wider transition-all shadow-sm">
+            Reset Cache
+          </button>
+        </div>
+      </div>
+
+      <!-- Secure API Key Configuration Box (Keeps Key Out of Git) -->
+      <div class="bg-[#faf8f5] border border-[#e8e1d7] rounded-xl p-4 space-y-2">
+        <label class="block text-xs font-extrabold text-[#2c221b] uppercase tracking-wider">OneSignal REST API Key Configuration</label>
+        <p class="text-[11px] text-slate-500">Saved locally in your browser so it stays safe from repository scanners.</p>
+        <div class="flex gap-2 pt-1">
+          <input type="password" id="api-key-input" placeholder="Paste REST API Key..." class="w-full p-2.5 border border-slate-200 rounded-lg text-xs focus:outline-none focus:ring-2 focus:ring-[#a35d48]" />
+          <button type="button" onclick="saveApiKey()" class="bg-slate-700 hover:bg-slate-800 text-white font-bold px-3 py-2 rounded-lg text-xs shrink-0 cursor-pointer">Save Key</button>
+        </div>
+      </div>
+
+      <form id="broadcast-form" class="space-y-4">
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1">Notice Subject</label>
+          <input type="text" id="alert-title" required placeholder="e.g., Opening Available This Week!" class="w-full p-3 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#a35d48]" />
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1">Message Body</label>
+          <textarea id="alert-message" rows="4" required placeholder="Type your broadcast message here..." class="w-full p-3 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#a35d48]"></textarea>
+        </div>
+
+        <button type="submit" class="w-full bg-[#a35d48] hover:bg-[#8c4e3b] text-white font-extrabold py-3.5 px-4 rounded-xl text-xs tracking-wider uppercase transition-all shadow-md cursor-pointer flex items-center justify-center space-x-2">
+          <span>📤</span>
+          <span>Send Push Notification to Clients</span>
+        </button>
+      </form>
+
+      <div id="status-message" class="text-center text-xs font-bold text-emerald-600 hidden">
+        Broadcast sent successfully!
+      </div>
+
+      <div class="pt-4 border-t border-slate-100 text-center">
+        <a href="index.html" class="text-xs font-semibold text-slate-400 hover:text-slate-600">← Back to Hub</a>
+      </div>
+    </div>
+
+  </main>
+
+  <script>
+    const CORRECT_PASSWORD = "1234";
+    const ONESIGNAL_APP_ID = "20ffec5d-47ec-47a2-904f-6ad334514f44";
+
+    const loginForm = document.getElementById('login-form');
+    const loginSection = document.getElementById('login-section');
+    const broadcastSection = document.getElementById('broadcast-section');
+    const loginError = document.getElementById('login-error');
+
+    window.addEventListener('DOMContentLoaded', () => {
+      const savedKey = localStorage.getItem('meranda_onesignal_key');
+      if (savedKey) {
+        document.getElementById('api-key-input').value = savedKey;
+      }
+    });
+
+    function saveApiKey() {
+      const key = document.getElementById('api-key-input').value.trim();
+      if (key) {
+        localStorage.setItem('meranda_onesignal_key', key);
+        alert('OneSignal REST API Key saved securely to your browser storage!');
+      } else {
+        alert('Please enter a valid API key.');
+      }
+    }
+
+    if (sessionStorage.getItem('meranda_admin_auth') === 'true') {
+      loginSection.classList.add('hidden');
+      broadcastSection.classList.remove('hidden');
+    }
+
+    loginForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const enteredValue = document.getElementById('admin-pass-input').value;
+
+      if (enteredValue === CORRECT_PASSWORD) {
+        sessionStorage.setItem('meranda_admin_auth', 'true');
+        loginSection.classList.add('hidden');
+        broadcastSection.classList.remove('hidden');
+        loginError.classList.add('hidden');
+        checkAdminSubscriptionStatus();
+      } else {
+        loginError.classList.remove('hidden');
+        document.getElementById('admin-pass-input').value = '';
+      }
+    });
+
+    function logoutAdmin() {
+      sessionStorage.removeItem('meranda_admin_auth');
+      broadcastSection.classList.add('hidden');
+      loginSection.classList.add('hidden'); // wait, keep login section shown
+      loginSection.classList.remove('hidden');
+      document.getElementById('admin-pass-input').value = '';
+    }
+
+    document.getElementById('broadcast-form').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      
+      const apiKey = localStorage.getItem('meranda_onesignal_key');
+      if (!apiKey) {
+        alert('Please enter and save your OneSignal REST API Key in the settings box above first!');
+        return;
+      }
+
+      const title = document.getElementById('alert-title').value;
+      const message = document.getElementById('alert-message').value;
+
+      const statusMsg = document.getElementById('status-message');
+      statusMsg.textContent = "Sending broadcast...";
+      statusMsg.classList.remove('hidden', 'text-red-600', 'text-emerald-600');
+      statusMsg.classList.add('text-slate-600');
+
+      try {
+        const response = await fetch("https://onesignal.com/api/v1/notifications", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json; charset=utf-8",
+            "Authorization": `Basic ${apiKey}`
+          },
+          body: JSON.stringify({
+            app_id: ONESIGNAL_APP_ID,
+            included_segments: ["All"],
+            headings: { "en": title },
+            contents: { "en": message }
+          })
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          statusMsg.textContent = "Broadcast sent successfully!";
+          statusMsg.classList.remove('text-slate-600');
+          statusMsg.classList.add('text-emerald-600');
+          document.getElementById('broadcast-form').reset();
+        } else {
+          throw new Error(data.errors ? data.errors[0] : "Failed to send notice");
+        }
+      } catch (err) {
+        console.error("Broadcast error:", err);
+        statusMsg.textContent = "Error sending notice. Check your API Key.";
+        statusMsg.classList.remove('text-slate-600');
+        statusMsg.classList.add('text-red-600');
+      }
+
+      setTimeout(() => {
+        statusMsg.classList.add('hidden');
+      }, 4000);
+    });
+  </script>
+
+</body>
+</html>
